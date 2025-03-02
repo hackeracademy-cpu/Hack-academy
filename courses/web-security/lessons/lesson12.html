@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Testing and Auditing - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Security Testing and Auditing</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Security Testing</h2>
+                <p>Security testing is a crucial part of the development lifecycle that helps identify vulnerabilities and weaknesses in your application. Regular security audits and testing help maintain a strong security posture and protect against emerging threats.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Types of Security Testing</h2>
+                <div class="info-box">
+                    <h3>Testing Categories:</h3>
+                    <ul>
+                        <li><strong>Vulnerability Scanning:</strong> Automated security testing</li>
+                        <li><strong>Penetration Testing:</strong> Simulated cyber attacks</li>
+                        <li><strong>Security Auditing:</strong> Comprehensive review</li>
+                        <li><strong>Code Review:</strong> Manual security analysis</li>
+                        <li><strong>Compliance Testing:</strong> Regulatory requirements</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Example of security testing implementation
+const security = require('security-testing-framework');
+const scanner = require('vulnerability-scanner');
+const reporter = require('security-report-generator');
+
+class SecurityTester {
+    constructor() {
+        this.vulnerabilities = [];
+        this.testResults = {};
+    }
+
+    async runSecurityTests() {
+        // Configure test parameters
+        const config = {
+            target: 'https://your-application.com',
+            scanDepth: 'deep',
+            includeAPIs: true,
+            authToken: process.env.SECURITY_TOKEN
+        };
+
+        try {
+            // Run automated vulnerability scan
+            const scanResults = await scanner.analyze(config);
+            
+            // Test authentication system
+            await this.testAuthentication();
+            
+            // Test input validation
+            await this.testInputValidation();
+            
+            // Test access controls
+            await this.testAccessControls();
+            
+            // Generate detailed report
+            return this.generateReport();
+        } catch (error) {
+            console.error('Security test failed:', error);
+            throw error;
+        }
+    }
+
+    async testAuthentication() {
+        const tests = [
+            // Test password strength
+            {
+                name: 'password_strength',
+                test: async () => {
+                    const weakPasswords = [
+                        'password123',
+                        'admin123',
+                        '12345678'
+                    ];
+                    
+                    for (const password of weakPasswords) {
+                        const result = await security.testPassword(password);
+                        if (result.acceptable) {
+                            this.vulnerabilities.push({
+                                type: 'weak_password',
+                                severity: 'high',
+                                details: 'Weak password accepted'
+                            });
+                        }
+                    }
+                }
+            },
+            // Test brute force protection
+            {
+                name: 'brute_force',
+                test: async () => {
+                    const result = await security.testBruteForce({
+                        endpoint: '/login',
+                        attempts: 10,
+                        timeWindow: '1m'
+                    });
+                    
+                    if (!result.protected) {
+                        this.vulnerabilities.push({
+                            type: 'no_brute_force_protection',
+                            severity: 'critical',
+                            details: 'No rate limiting detected'
+                        });
+                    }
+                }
+            }
+        ];
+
+        for (const test of tests) {
+            await test.test();
+        }
+    }
+
+    generateReport() {
+        return reporter.create({
+            vulnerabilities: this.vulnerabilities,
+            testResults: this.testResults,
+            recommendations: this.generateRecommendations(),
+            summary: {
+                totalTests: Object.keys(this.testResults).length,
+                passedTests: this.countPassedTests(),
+                criticalIssues: this.countCriticalIssues(),
+                overallRisk: this.calculateRiskLevel()
+            }
+        });
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Testing Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Testing Guidelines:</h3>
+                    <ul>
+                        <li>Test regularly and automatically</li>
+                        <li>Use multiple testing methods</li>
+                        <li>Keep testing tools updated</li>
+                        <li>Document all findings</li>
+                        <li>Prioritize vulnerability fixes</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson12-quiz">
+                    <div class="question" data-correct="c">
+                        <p>Which type of testing simulates real-world attacks?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Unit Testing
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Integration Testing
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Penetration Testing
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Functional Testing
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>Why is continuous security testing important?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                It's required by law
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                New vulnerabilities emerge constantly
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                It's cheaper than manual testing
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                It's faster than manual testing
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <section class="lesson-section certificate-section" id="certificate" style="display: none;">
+                <h2>Course Completion Certificate</h2>
+                <div class="certificate-container">
+                    <div class="certificate">
+                        <div class="certificate-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <h1>Certificate of Completion</h1>
+                        </div>
+                        <div class="certificate-body">
+                            <p>This is to certify that</p>
+                            <h2 class="certificate-name" id="certificateName">Student Name</h2>
+                            <p>has successfully completed the</p>
+                            <h3>Web Security Fundamentals Course</h3>
+                            <p>at Hack Academy</p>
+                            <div class="certificate-date">
+                                <p>Completed on: <span id="completionDate">Date</span></p>
+                            </div>
+                        </div>
+                        <div class="certificate-footer">
+                            <div class="certificate-seal">
+                                <i class="fas fa-certificate"></i>
+                                <p>Hack Academy</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="print-certificate" onclick="window.print()">Print Certificate</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson11.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='../../../index.html#courses'">Back to Courses</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        // Certificate generation
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.getElementById('lesson12-quiz');
+            const certificate = document.getElementById('certificate');
+            const submitButton = quiz.querySelector('.submit-quiz');
+            
+            submitButton.addEventListener('click', function() {
+                const questions = quiz.querySelectorAll('.question');
+                let allCorrect = true;
+                
+                questions.forEach(question => {
+                    const selectedAnswer = question.querySelector('input:checked');
+                    if (!selectedAnswer || selectedAnswer.parentElement.querySelector('input').value !== question.dataset.correct) {
+                        allCorrect = false;
+                    }
+                });
+                
+                if (allCorrect) {
+                    // Show certificate section
+                    certificate.style.display = 'block';
+                    
+                    // Set certificate details
+                    const today = new Date();
+                    document.getElementById('completionDate').textContent = today.toLocaleDateString();
+                    
+                    // Ask for their name
+                    const userName = prompt('Please enter your name for the certificate:', '');
+                    if (userName) {
+                        document.getElementById('certificateName').textContent = userName;
+                    }
+                    
+                    // Scroll to certificate
+                    certificate.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+    <style>
+        /* Certificate Styles */
+        .certificate-section {
+            margin: 2rem 0;
+        }
+        
+        .certificate-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .certificate {
+            background: #fff;
+            border: 2px solid gold;
+            padding: 2rem;
+            width: 800px;
+            max-width: 100%;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .certificate-header {
+            margin-bottom: 2rem;
+        }
+        
+        .certificate-header i {
+            font-size: 3rem;
+            color: #2c3e50;
+        }
+        
+        .certificate-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin: 1rem 0;
+        }
+        
+        .certificate-body {
+            margin: 2rem 0;
+        }
+        
+        .certificate-name {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin: 1rem 0;
+            font-family: 'Brush Script MT', cursive;
+        }
+        
+        .certificate-date {
+            margin: 2rem 0;
+        }
+        
+        .certificate-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 3rem;
+        }
+        
+        .certificate-seal {
+            text-align: center;
+        }
+        
+        .certificate-seal i {
+            font-size: 4rem;
+            color: gold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .certificate-seal p {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .print-certificate {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .print-certificate:hover {
+            background: #34495e;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .certificate, .certificate * {
+                visibility: visible;
+            }
+            .certificate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+            .print-certificate {
+                display: none;
+            }
+        }
+    </style>
+</body>
+</html>

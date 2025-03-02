@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signatures and Certificates - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Digital Signatures and Certificates</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Digital Signatures</h2>
+                <p>Digital signatures provide authentication, non-repudiation, and integrity verification for digital documents and communications.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Digital Signature Components</h2>
+                <div class="info-box">
+                    <h3>Key Elements:</h3>
+                    <ul>
+                        <li><strong>Message Digest:</strong> Hash of the original message</li>
+                        <li><strong>Private Key:</strong> Used to sign the digest</li>
+                        <li><strong>Public Key:</strong> Used to verify the signature</li>
+                        <li><strong>Certificate:</strong> Binds identity to public key</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Digital Certificates</h2>
+                <div class="info-box">
+                    <h3>Certificate Components:</h3>
+                    <ul>
+                        <li><strong>Subject Information:</strong> Entity being certified</li>
+                        <li><strong>Issuer Information:</strong> Certificate Authority (CA)</li>
+                        <li><strong>Public Key:</strong> Subject's public key</li>
+                        <li><strong>Validity Period:</strong> Start and end dates</li>
+                        <li><strong>Digital Signature:</strong> CA's signature</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding, rsa
+from cryptography.exceptions import InvalidSignature
+
+def digital_signature_example():
+    # Generate key pair
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048
+    )
+    public_key = private_key.public_key()
+    
+    # Message to be signed
+    message = b"Important document content"
+    
+    # Create signature
+    signature = private_key.sign(
+        message,
+        padding.PSS(
+            mgf=padding.MGF1(hashes.SHA256()),
+            salt_length=padding.PSS.MAX_LENGTH
+        ),
+        hashes.SHA256()
+    )
+    
+    # Verify signature
+    try:
+        public_key.verify(
+            signature,
+            message,
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+            ),
+            hashes.SHA256()
+        )
+        print("Signature is valid")
+        return True
+    except InvalidSignature:
+        print("Signature is invalid")
+        return False</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Use strong hash algorithms (SHA-256 or better)</li>
+                        <li>Protect private keys securely</li>
+                        <li>Validate certificate chains completely</li>
+                        <li>Check certificate revocation status</li>
+                        <li>Use appropriate padding schemes</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="b">
+                        <p>Which component is used to verify a digital signature?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Private Key
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Public Key
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Message Digest
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Certificate Authority
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>What is the primary purpose of a digital certificate?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Encrypt data
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Generate signatures
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Bind identity to public key
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Store private keys
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>What should you always check when validating a digital certificate?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Revocation status
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                File size
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Creation date
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Private key
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson2.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson4.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Communication Protocols - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Secure Communication Protocols</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding SSH</h2>
+                <p>Secure Shell (SSH) is a cryptographic network protocol for secure remote system administration and file transfers over an unsecured network.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>SSH Protocol Components</h2>
+                <div class="info-box">
+                    <h3>Key Elements:</h3>
+                    <ul>
+                        <li><strong>Transport Layer:</strong> Server authentication, encryption</li>
+                        <li><strong>User Authentication:</strong> Client authentication methods</li>
+                        <li><strong>Connection Protocol:</strong> Multiplexed channels</li>
+                        <li><strong>Key Exchange:</strong> Diffie-Hellman key exchange</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>SSH Authentication Methods</h2>
+                <div class="info-box">
+                    <h3>Common Methods:</h3>
+                    <ul>
+                        <li><strong>Public Key:</strong> Using key pairs for authentication</li>
+                        <li><strong>Password:</strong> Traditional password authentication</li>
+                        <li><strong>Host-based:</strong> Using trusted hosts</li>
+                        <li><strong>Keyboard Interactive:</strong> Challenge-response</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+import paramiko
+import os
+
+def ssh_example():
+    # Create SSH client
+    ssh = paramiko.SSHClient()
+    
+    # Configure client
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    def secure_connection(hostname, username, key_filename):
+        try:
+            # Connect using key-based authentication
+            ssh.connect(
+                hostname=hostname,
+                username=username,
+                key_filename=key_filename
+            )
+            
+            # Execute remote command
+            stdin, stdout, stderr = ssh.exec_command('ls -la')
+            
+            # Get command output
+            output = stdout.read().decode()
+            
+            # Create SFTP session
+            sftp = ssh.open_sftp()
+            
+            # Upload file
+            sftp.put('local_file.txt', 'remote_file.txt')
+            
+            # Download file
+            sftp.get('remote_file.txt', 'downloaded_file.txt')
+            
+            return output
+            
+        except paramiko.AuthenticationException:
+            print("Authentication failed")
+            return None
+        except paramiko.SSHException as ssh_exception:
+            print(f"SSH exception: {ssh_exception}")
+            return None
+        finally:
+            ssh.close()
+    
+    return secure_connection</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Use key-based authentication instead of passwords</li>
+                        <li>Implement strong access controls and user management</li>
+                        <li>Regular key rotation and management</li>
+                        <li>Monitor and log SSH activities</li>
+                        <li>Keep SSH software and configurations updated</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="a">
+                        <p>Which authentication method is most secure for SSH?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Public Key Authentication
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Password Authentication
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Host-based Authentication
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Keyboard Interactive
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which protocol component handles server authentication in SSH?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                User Authentication Layer
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Connection Protocol
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Transport Layer
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Application Layer
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>What is the recommended practice for SSH key management?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Never rotate keys
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Regular key rotation
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Share keys between users
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Store keys in public folders
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson6.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson8.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

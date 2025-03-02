@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Cryptography - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhYDzGu6xEPj6yJCXTFZqBw5xWQGQhFWw",
+            authDomain: "hack-academy-learning.firebaseapp.com",
+            projectId: "hack-academy-learning",
+            storageBucket: "hack-academy-learning.appspot.com",
+            messagingSenderId: "354001063904",
+            appId: "1:354001063904:web:5e32668679d96f3d6f3c3c"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Introduction to Cryptography</h1>
+            
+            <section class="lesson-section">
+                <h2>Cryptographic Fundamentals</h2>
+                <p>Cryptography is the practice and study of techniques for secure communication in the presence of adversaries. It's fundamental to modern computer security and privacy.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Concepts</h2>
+                <div class="info-box">
+                    <h3>Basic Principles:</h3>
+                    <ul>
+                        <li><strong>Confidentiality:</strong> Keeping information secret</li>
+                        <li><strong>Integrity:</strong> Ensuring information hasn't been tampered with</li>
+                        <li><strong>Authentication:</strong> Verifying the identity of parties</li>
+                        <li><strong>Non-repudiation:</strong> Preventing denial of actions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Types of Cryptography</h2>
+                <div class="info-box">
+                    <h3>Main Categories:</h3>
+                    <ul>
+                        <li><strong>Symmetric Encryption:</strong> Same key for encryption and decryption</li>
+                        <li><strong>Asymmetric Encryption:</strong> Public and private key pairs</li>
+                        <li><strong>Hash Functions:</strong> One-way functions for data integrity</li>
+                        <li><strong>Digital Signatures:</strong> Combining asymmetric encryption and hashing</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+
+def symmetric_encryption_example():
+    # Generate a key
+    key = Fernet.generate_key()
+    f = Fernet(key)
+    
+    # Encrypt message
+    message = b"Secret message"
+    encrypted = f.encrypt(message)
+    
+    # Decrypt message
+    decrypted = f.decrypt(encrypted)
+    return decrypted == message
+
+def asymmetric_encryption_example():
+    # Generate key pair
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048
+    )
+    public_key = private_key.public_key()
+    
+    # Encrypt with public key
+    message = b"Secret message"
+    encrypted = public_key.encrypt(
+        message,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    
+    # Decrypt with private key
+    decrypted = private_key.decrypt(
+        encrypted,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    return decrypted == message</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Never implement your own cryptographic algorithms</li>
+                        <li>Use well-tested cryptographic libraries</li>
+                        <li>Keep private keys secure and never share them</li>
+                        <li>Use appropriate key sizes for adequate security</li>
+                        <li>Implement proper key management procedures</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="b">
+                        <p>Which type of cryptography uses different keys for encryption and decryption?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Symmetric Cryptography
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Asymmetric Cryptography
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Hash Functions
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Block Ciphers
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>What is the primary purpose of a cryptographic hash function?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Encrypt data for transmission
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Generate encryption keys
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Ensure data integrity
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Store passwords securely
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>Which of these is NOT a recommended cryptographic practice?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Creating your own encryption algorithm
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Using established cryptographic libraries
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Implementing proper key management
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Using appropriate key sizes
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" disabled>Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson2.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

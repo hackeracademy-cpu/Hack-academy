@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Incident Response - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Network Security Incident Response</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Incident Response</h2>
+                <p>Network security incident response involves the systematic approach to handling security breaches and incidents, including detection, analysis, containment, eradication, and recovery, while maintaining communication and documentation throughout the process.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Components</h2>
+                <div class="info-box">
+                    <h3>Essential Elements:</h3>
+                    <ul>
+                        <li><strong>Incident Detection:</strong> Alert monitoring</li>
+                        <li><strong>Analysis:</strong> Impact assessment</li>
+                        <li><strong>Containment:</strong> Threat isolation</li>
+                        <li><strong>Recovery:</strong> System restoration</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+class IncidentResponse:
+    def __init__(self):
+        self.incidents = {}
+        self.response_teams = {}
+        self.playbooks = {}
+        self.evidence = {}
+        
+    def handle_security_incident(self, incident_data):
+        """Handle security incident"""
+        incident = {
+            'id': str(uuid.uuid4()),
+            'type': incident_data['type'],
+            'severity': self._assess_severity(incident_data),
+            'status': 'detected',
+            'timeline': [],
+            'evidence': []
+        }
+        
+        try:
+            self._document_incident(incident, incident_data)
+            self._assign_response_team(incident)
+            self._execute_response_plan(incident)
+            return self._generate_incident_report(incident['id'])
+        except Exception as e:
+            self._escalate_incident(incident, str(e))
+            return {'status': 'escalated', 'error': str(e)}
+    
+    def _execute_response_plan(self, incident):
+        """Execute incident response plan"""
+        phases = [
+            self._detect_and_analyze,
+            self._contain_threat,
+            self._eradicate_threat,
+            self._recover_systems,
+            self._conduct_postmortem
+        ]
+        
+        for phase in phases:
+            result = phase(incident)
+            self._update_incident_timeline(incident, result)
+            
+            if not result['success']:
+                raise Exception(f"Phase failed: {result['phase']}")
+    
+    def detect_and_analyze(self, incident):
+        """Detect and analyze incident"""
+        analysis = {
+            'phase': 'detection_analysis',
+            'findings': [],
+            'affected_systems': set(),
+            'indicators': []
+        }
+        
+        # Collect and analyze evidence
+        evidence = self._collect_evidence(incident)
+        analysis['findings'] = self._analyze_evidence(evidence)
+        
+        # Identify affected systems
+        affected = self._identify_affected_systems(analysis['findings'])
+        analysis['affected_systems'].update(affected)
+        
+        # Identify threat indicators
+        indicators = self._extract_threat_indicators(analysis['findings'])
+        analysis['indicators'].extend(indicators)
+        
+        return analysis
+    
+    def contain_threat(self, incident):
+        """Contain security threat"""
+        containment = {
+            'phase': 'containment',
+            'actions': [],
+            'status': 'in_progress'
+        }
+        
+        try:
+            # Isolate affected systems
+            isolation = self._isolate_affected_systems(incident)
+            containment['actions'].append(isolation)
+            
+            # Block malicious traffic
+            blocking = self._block_malicious_traffic(incident)
+            containment['actions'].append(blocking)
+            
+            # Secure credentials
+            credential_security = self._secure_credentials(incident)
+            containment['actions'].append(credential_security)
+            
+            containment['status'] = 'completed'
+            return containment
+            
+        except Exception as e:
+            containment['status'] = 'failed'
+            containment['error'] = str(e)
+            return containment
+    
+    def eradicate_threat(self, incident):
+        """Eradicate security threat"""
+        eradication = {
+            'phase': 'eradication',
+            'actions': [],
+            'status': 'in_progress'
+        }
+        
+        try:
+            # Remove malware
+            malware_removal = self._remove_malware(incident)
+            eradication['actions'].append(malware_removal)
+            
+            # Patch vulnerabilities
+            patching = self._patch_vulnerabilities(incident)
+            eradication['actions'].append(patching)
+            
+            # Clean up compromised accounts
+            account_cleanup = self._cleanup_compromised_accounts(incident)
+            eradication['actions'].append(account_cleanup)
+            
+            eradication['status'] = 'completed'
+            return eradication
+            
+        except Exception as e:
+            eradication['status'] = 'failed'
+            eradication['error'] = str(e)
+            return eradication
+    
+    def recover_systems(self, incident):
+        """Recover affected systems"""
+        recovery = {
+            'phase': 'recovery',
+            'steps': [],
+            'status': 'in_progress'
+        }
+        
+        try:
+            # Restore from backups
+            restoration = self._restore_from_backups(incident)
+            recovery['steps'].append(restoration)
+            
+            # Verify system integrity
+            verification = self._verify_system_integrity(incident)
+            recovery['steps'].append(verification)
+            
+            # Resume operations
+            resumption = self._resume_operations(incident)
+            recovery['steps'].append(resumption)
+            
+            recovery['status'] = 'completed'
+            return recovery
+            
+        except Exception as e:
+            recovery['status'] = 'failed'
+            recovery['error'] = str(e)
+            return recovery
+    
+    def _collect_evidence(self, incident):
+        """Collect incident evidence"""
+        # Implementation details
+        pass
+    
+    def _analyze_evidence(self, evidence):
+        """Analyze collected evidence"""
+        # Implementation details
+        pass
+    
+    def _identify_affected_systems(self, findings):
+        """Identify affected systems"""
+        # Implementation details
+        pass
+    
+    def _extract_threat_indicators(self, findings):
+        """Extract threat indicators"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Incident Response Guidelines:</h3>
+                    <ul>
+                        <li>Maintain incident playbooks</li>
+                        <li>Document all actions</li>
+                        <li>Preserve evidence</li>
+                        <li>Regular team training</li>
+                        <li>Post-incident analysis</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson14-quiz">
+                    <div class="question" data-correct="a">
+                        <p>What is the first step in incident response?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Detection and Analysis
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                System Recovery
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Threat Eradication
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Team Training
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Why is evidence preservation important in incident response?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Improve system performance
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Speed up recovery
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Support investigation
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Reduce costs
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson13.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson15.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

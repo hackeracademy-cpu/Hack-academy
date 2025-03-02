@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Site Scripting (XSS) - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Cross-Site Scripting (XSS)</h1>
+            
+            <section class="lesson-section">
+                <h2>What is XSS?</h2>
+                <p>Cross-Site Scripting (XSS) is a security vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. These scripts can steal sensitive information, hijack user sessions, or modify webpage content.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Types of XSS Attacks</h2>
+                <div class="info-box">
+                    <h3>Main Categories:</h3>
+                    <ul>
+                        <li><strong>Reflected XSS:</strong> Malicious script is reflected off the web server</li>
+                        <li><strong>Stored XSS:</strong> Malicious script is stored on the target server</li>
+                        <li><strong>DOM-based XSS:</strong> Vulnerability exists in client-side code</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Vulnerable Code Examples</h2>
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Vulnerable code
+function displayComment(comment) {
+    document.getElementById('comments').innerHTML = comment;
+    // Dangerous! Direct insertion of user input
+}
+
+// Secure code
+function displayComment(comment) {
+    const text = document.createTextNode(comment);
+    document.getElementById('comments').appendChild(text);
+    // Safe! Text is properly escaped
+}
+                    </code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Prevention Techniques</h2>
+                <div class="info-box">
+                    <h3>Best Practices:</h3>
+                    <ul>
+                        <li>Input Validation and Sanitization</li>
+                        <li>Output Encoding</li>
+                        <li>Content Security Policy (CSP)</li>
+                        <li>HttpOnly Cookies</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Example of input sanitization
+const sanitizeHTML = (str) => {
+    const temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+};
+
+// Example of CSP header
+// Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-random123'
+                    </code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Real-World Impact</h2>
+                <div class="info-box warning">
+                    <h3>XSS Attacks Can Lead To:</h3>
+                    <ul>
+                        <li>Session Hijacking</li>
+                        <li>Data Theft</li>
+                        <li>Defacement</li>
+                        <li>Malware Distribution</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson3-quiz">
+                    <div class="question" data-correct="c">
+                        <p>Which type of XSS attack persists in the application's database?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Reflected XSS
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                DOM-based XSS
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Stored XSS
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Client XSS
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>Which method is safer for adding text content to an element?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                innerHTML
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                textContent
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                innerText
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                outerHTML
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>Which header helps prevent XSS attacks by controlling resource loading?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Content-Security-Policy
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                X-Frame-Options
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Cache-Control
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Access-Control-Allow-Origin
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='../lessons/lesson2.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='../lessons/lesson4.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../courses/web-security/script.js"></script>
+</body>
+</html> 

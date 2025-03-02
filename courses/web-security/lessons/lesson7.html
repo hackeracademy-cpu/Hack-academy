@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Password Storage - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Secure Password Storage</h1>
+            
+            <section class="lesson-section">
+                <h2>Password Security Fundamentals</h2>
+                <p>Proper password storage is crucial for protecting user credentials. Never store passwords in plain text - they must always be hashed using strong cryptographic algorithms with appropriate salting mechanisms.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Password Hashing Concepts</h2>
+                <div class="info-box">
+                    <h3>Key Components:</h3>
+                    <ul>
+                        <li><strong>Hash Function:</strong> One-way cryptographic function</li>
+                        <li><strong>Salt:</strong> Random data added to password before hashing</li>
+                        <li><strong>Work Factor:</strong> Computational cost of hashing</li>
+                        <li><strong>Key Stretching:</strong> Multiple iterations of hashing</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Example of secure password hashing with bcrypt
+const bcrypt = require('bcrypt');
+
+async function securePasswordStorage() {
+    // Generate a salt with work factor of 12
+    const saltRounds = 12;
+    const password = 'user_password';
+    
+    try {
+        // Hash password with salt
+        const hash = await bcrypt.hash(password, saltRounds);
+        console.log('Hashed password:', hash);
+        
+        // Verify password
+        const isMatch = await bcrypt.compare('user_password', hash);
+        console.log('Password match:', isMatch); // true
+        
+        // Wrong password check
+        const wrongMatch = await bcrypt.compare('wrong_password', hash);
+        console.log('Wrong password match:', wrongMatch); // false
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Example of password validation
+function validatePassword(password) {
+    const minLength = 12;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return {
+        isValid: password.length >= minLength &&
+                hasUpperCase &&
+                hasLowerCase &&
+                hasNumbers &&
+                hasSpecialChars,
+        errors: [
+            !hasUpperCase && 'Missing uppercase letter',
+            !hasLowerCase && 'Missing lowercase letter',
+            !hasNumbers && 'Missing number',
+            !hasSpecialChars && 'Missing special character',
+            password.length < minLength && 'Password too short'
+        ].filter(Boolean)
+    };
+}</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Common Password Storage Mistakes</h2>
+                <div class="info-box warning">
+                    <h3>Never Do These:</h3>
+                    <ul>
+                        <li>Store passwords in plain text</li>
+                        <li>Use weak hashing algorithms (MD5, SHA1)</li>
+                        <li>Forget to use salt</li>
+                        <li>Use custom encryption algorithms</li>
+                        <li>Store sensitive data in logs</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson7-quiz">
+                    <div class="question" data-correct="a">
+                        <p>What is the purpose of salt in password hashing?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Prevent rainbow table attacks
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Make passwords shorter
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Encrypt the password
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Speed up hashing
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which of these is a recommended password hashing algorithm?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                MD5
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                SHA1
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Bcrypt
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Base64
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson6.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson8.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

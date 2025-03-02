@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Review and Certification - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        .certificate-container {
+            display: none;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 40px;
+            border: 10px solid gold;
+            text-align: center;
+            background: #fff;
+            position: relative;
+        }
+
+        .certificate-header {
+            font-size: 48px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .certificate-body {
+            font-size: 24px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .certificate-name {
+            font-size: 36px;
+            color: #2c3e50;
+            margin: 20px 0;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+
+        .certificate-date {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
+        .certificate-seal {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            border: 2px solid gold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: gold;
+            background: #2c3e50;
+        }
+
+        .certificate-footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .print-button {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .certificate-container, .certificate-container * {
+                visibility: visible;
+            }
+            .certificate-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Course Review and Certification</h1>
+            
+            <section class="lesson-section">
+                <h2>Course Summary</h2>
+                <p>Congratulations on reaching the final lesson of the Network Security course! Let's review the key concepts we've covered throughout this comprehensive journey.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Topics Covered</h2>
+                <div class="info-box">
+                    <h3>Course Overview:</h3>
+                    <ul>
+                        <li>Network Security Fundamentals</li>
+                        <li>Network Access Control</li>
+                        <li>Network Segmentation and VLANs</li>
+                        <li>Security Automation</li>
+                        <li>Security Testing</li>
+                        <li>Incident Response</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Final Assessment</h2>
+                <div class="quiz" id="final-quiz">
+                    <div class="question" data-correct="c">
+                        <p>Which security measure is most effective for preventing unauthorized network access?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Regular backups
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                System logging
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Network segmentation
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Incident documentation
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>What is the primary goal of security automation?</p>  
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Replacing security teams
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Reducing response time
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Increasing network speed
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Minimizing documentation
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>What is the first step in incident response?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Detection and Analysis
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                System Recovery
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Team Notification
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Evidence Destruction
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="certificate-container" id="certificate">
+                <div class="certificate-header">Certificate of Completion</div>
+                <div class="certificate-body">
+                    This is to certify that
+                    <div class="certificate-name" id="student-name"></div>
+                    has successfully completed the
+                    <br>
+                    <strong>Network Security Course</strong>
+                    <br>
+                    at Hack Academy
+                </div>
+                <div class="certificate-date" id="completion-date"></div>
+                <div class="certificate-footer">
+                    <div class="certificate-seal">HA</div>
+                    <div>Hack Academy</div>
+                </div>
+                <button class="print-button" onclick="window.print()">Print Certificate</button>
+            </div>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson14.html'">Previous Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.getElementById('final-quiz');
+            const certificate = document.getElementById('certificate');
+            
+            // Check login state
+            function checkLoginState() {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                const loginBtn = document.querySelector('.login-btn');
+                
+                if (currentUser.isLoggedIn) {
+                    loginBtn.innerHTML = `
+                        <i class="fas fa-user"></i>
+                        <span>${currentUser.name}</span>
+                    `;
+                    loginBtn.href = '#';
+                    
+                    // Add logout functionality
+                    loginBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('currentUser');
+                        window.location.href = '../../../index.html';
+                    });
+                } else {
+                    loginBtn.innerHTML = 'Login';
+                    loginBtn.href = '../../../login.html';
+                }
+            }
+            
+            // Run login state check
+            checkLoginState();
+            
+            // Load saved progress if it exists
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const progressKey = `networkSecurity_${currentUser.username || 'guest'}_lesson15`;
+            const savedProgress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+            
+            if (savedProgress.answers) {
+                savedProgress.answers.forEach((answer, index) => {
+                    if (answer !== null) {
+                        const input = quiz.querySelector(`input[name="q${index + 1}"][value="${answer}"]`);
+                        if (input) input.checked = true;
+                    }
+                });
+            }
+
+            // Show certificate if already completed
+            if (savedProgress.completed) {
+                certificate.style.display = 'block';
+                if (savedProgress.completionDate) {
+                    document.getElementById('completion-date').textContent = savedProgress.completionDate;
+                }
+                if (currentUser.isLoggedIn) {
+                    document.getElementById('student-name').textContent = currentUser.name;
+                } else if (savedProgress.name) {
+                    document.getElementById('student-name').textContent = savedProgress.name;
+                }
+            }
+
+            // Save answer when user selects an option
+            quiz.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.addEventListener('change', function() {
+                    const questionIndex = parseInt(this.name.replace('q', '')) - 1;
+                    const progress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+                    if (!progress.answers) progress.answers = [null, null, null];
+                    progress.answers[questionIndex] = this.value;
+                    localStorage.setItem(progressKey, JSON.stringify(progress));
+                });
+            });
+            
+            quiz.querySelector('.submit-quiz').addEventListener('click', function() {
+                let allCorrect = true;
+                const questions = quiz.querySelectorAll('.question');
+                const currentAnswers = [];
+                
+                questions.forEach((question, index) => {
+                    const selected = question.querySelector('input:checked');
+                    const feedback = question.querySelector('.feedback');
+                    const correctAnswer = question.getAttribute('data-correct');
+                    
+                    currentAnswers[index] = selected ? selected.value : null;
+                    
+                    if (!selected) {
+                        feedback.textContent = 'Please select an answer.';
+                        feedback.style.color = '#ff6b6b';
+                        allCorrect = false;
+                    } else if (selected.value === correctAnswer) {
+                        feedback.textContent = 'Correct!';
+                        feedback.style.color = '#2ecc71';
+                    } else {
+                        feedback.textContent = 'Incorrect. Please try again.';
+                        feedback.style.color = '#ff6b6b';
+                        allCorrect = false;
+                    }
+                });
+                
+                // Save current answers and progress
+                const progress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+                progress.answers = currentAnswers;
+                
+                if (allCorrect) {
+                    // Show certificate
+                    certificate.style.display = 'block';
+                    
+                    // Use logged in user's name or prompt for name
+                    let name = currentUser.isLoggedIn ? currentUser.name : null;
+                    if (!name) {
+                        name = prompt("Please enter your name for the certificate:");
+                    }
+                    
+                    if (name) {
+                        document.getElementById('student-name').textContent = name;
+                        const date = new Date();
+                        const completionDate = date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        document.getElementById('completion-date').textContent = completionDate;
+                        
+                        // Save completion status
+                        progress.completed = true;
+                        progress.name = name;
+                        progress.completionDate = completionDate;
+                    }
+                }
+                
+                localStorage.setItem(progressKey, JSON.stringify(progress));
+            });
+        });
+    </script>
+</body>
+</html> 

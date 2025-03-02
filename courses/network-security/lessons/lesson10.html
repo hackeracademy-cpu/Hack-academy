@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Policies and Compliance - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Network Security Policies and Compliance</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Security Policies</h2>
+                <p>Network security policies and compliance frameworks provide the foundation for protecting organizational assets, ensuring regulatory compliance, and maintaining a strong security posture across the network infrastructure.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Components</h2>
+                <div class="info-box">
+                    <h3>Essential Elements:</h3>
+                    <ul>
+                        <li><strong>Policy Framework:</strong> Guidelines and rules</li>
+                        <li><strong>Compliance Monitoring:</strong> Adherence tracking</li>
+                        <li><strong>Audit Procedures:</strong> Regular assessment</li>
+                        <li><strong>Incident Response:</strong> Policy enforcement</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+class SecurityPolicyManager:
+    def __init__(self):
+        self.policies = {}
+        self.compliance_rules = {}
+        self.audit_logs = []
+        self.violations = []
+        
+    def implement_security_policy(self, policy_data):
+        """Implement new security policy"""
+        policy = self._validate_policy(policy_data)
+        if policy:
+            self.policies[policy['id']] = {
+                'rules': policy['rules'],
+                'scope': policy['scope'],
+                'enforcement': policy['enforcement'],
+                'exceptions': policy['exceptions'],
+                'review_period': policy['review_period']
+            }
+            return self._deploy_policy(policy)
+        return False
+        
+    def monitor_compliance(self):
+        """Monitor policy compliance"""
+        compliance_status = {
+            'compliant': [],
+            'non_compliant': [],
+            'exceptions': [],
+            'pending_review': []
+        }
+        
+        for policy_id, policy in self.policies.items():
+            status = self._check_policy_compliance(policy)
+            compliance_status[status['category']].append({
+                'policy_id': policy_id,
+                'status': status['details'],
+                'last_check': time.time()
+            })
+            
+        return compliance_status
+    
+    def conduct_audit(self, audit_scope):
+        """Conduct security audit"""
+        audit = {
+            'id': str(uuid.uuid4()),
+            'timestamp': time.time(),
+            'scope': audit_scope,
+            'findings': []
+        }
+        
+        for area in audit_scope:
+            results = self._audit_area(area)
+            audit['findings'].extend(results)
+            
+        self.audit_logs.append(audit)
+        return self._generate_audit_report(audit)
+    
+    def handle_violation(self, violation):
+        """Handle policy violation"""
+        severity = self._assess_violation_severity(violation)
+        response = self._determine_response(severity)
+        
+        violation_record = {
+            'id': str(uuid.uuid4()),
+            'timestamp': time.time(),
+            'details': violation,
+            'severity': severity,
+            'response': response
+        }
+        
+        self.violations.append(violation_record)
+        self._execute_response(response)
+        
+        return violation_record
+    
+    def _validate_policy(self, policy):
+        """Validate policy structure and requirements"""
+        required_fields = {'id', 'rules', 'scope', 'enforcement'}
+        
+        if not all(field in policy for field in required_fields):
+            return None
+            
+        if not self._check_policy_conflicts(policy):
+            return None
+            
+        return policy
+    
+    def _check_policy_compliance(self, policy):
+        """Check compliance with specific policy"""
+        compliance_checks = {
+            'access_control': self._check_access_compliance,
+            'data_protection': self._check_data_compliance,
+            'network_security': self._check_network_compliance,
+            'incident_response': self._check_incident_compliance
+        }
+        
+        results = {}
+        for check_type, check_func in compliance_checks.items():
+            if check_type in policy['scope']:
+                results[check_type] = check_func(policy['rules'])
+                
+        return self._evaluate_compliance_results(results)
+    
+    def _audit_area(self, area):
+        """Audit specific security area"""
+        audit_procedures = {
+            'policies': self._audit_policies,
+            'controls': self._audit_controls,
+            'documentation': self._audit_documentation,
+            'training': self._audit_training
+        }
+        
+        if area in audit_procedures:
+            return audit_procedures[area]()
+        return []
+    
+    def _generate_audit_report(self, audit):
+        """Generate comprehensive audit report"""
+        return {
+            'summary': self._summarize_findings(audit['findings']),
+            'details': self._format_findings(audit['findings']),
+            'recommendations': self._make_recommendations(audit['findings']),
+            'compliance_status': self._assess_compliance(audit['findings'])
+        }
+    
+    def _assess_violation_severity(self, violation):
+        """Assess violation severity"""
+        # Implementation details
+        pass
+    
+    def _determine_response(self, severity):
+        """Determine appropriate response"""
+        # Implementation details
+        pass
+    
+    def _execute_response(self, response):
+        """Execute violation response"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Policy Management Guidelines:</h3>
+                    <ul>
+                        <li>Regular policy reviews</li>
+                        <li>Clear documentation</li>
+                        <li>Employee training</li>
+                        <li>Incident response plans</li>
+                        <li>Compliance monitoring</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson10-quiz">
+                    <div class="question" data-correct="c">
+                        <p>What is the primary purpose of conducting regular security audits?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Improve network speed
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Train employees
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Verify policy compliance
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Update software
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>Which component is essential for effective policy enforcement?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Violation handling
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Network monitoring
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Software updates
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Data backup
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson9.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson11.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

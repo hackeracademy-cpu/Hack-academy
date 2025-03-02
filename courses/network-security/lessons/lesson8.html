@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Routing Security - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Advanced Routing Security</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Routing Security</h2>
+                <p>Advanced routing security focuses on protecting network routing protocols and ensuring the integrity and authenticity of routing information to prevent attacks like route hijacking and man-in-the-middle attacks.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Components</h2>
+                <div class="info-box">
+                    <h3>Essential Elements:</h3>
+                    <ul>
+                        <li><strong>Route Authentication:</strong> Verifying route updates</li>
+                        <li><strong>Protocol Security:</strong> Securing BGP, OSPF, etc.</li>
+                        <li><strong>Route Filtering:</strong> Controlling route advertisements</li>
+                        <li><strong>Monitoring:</strong> Detecting routing anomalies</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+class RoutingSecurity:
+    def __init__(self):
+        self.route_table = {}
+        self.trusted_peers = set()
+        self.route_filters = []
+        self.security_policies = {}
+        
+    def configure_bgp_security(self, as_number, peer_info):
+        """Configure BGP security settings"""
+        return {
+            'as_number': as_number,
+            'rpki_validation': self._setup_rpki_validation(),
+            'peer_authentication': self._configure_peer_auth(peer_info),
+            'route_filters': self._setup_route_filters(),
+            'max_prefix_limits': self._set_prefix_limits(peer_info)
+        }
+    
+    def validate_route_update(self, update):
+        """Validate incoming route updates"""
+        if not self._verify_origin(update):
+            return False
+            
+        if not self._check_path_attributes(update):
+            return False
+            
+        if not self._apply_route_filters(update):
+            return False
+            
+        return True
+    
+    def monitor_routing_changes(self):
+        """Monitor for suspicious routing changes"""
+        anomalies = []
+        current_state = self._get_routing_state()
+        
+        for prefix, route in current_state.items():
+            if self._is_suspicious_change(prefix, route):
+                anomalies.append({
+                    'prefix': prefix,
+                    'old_route': self.route_table.get(prefix),
+                    'new_route': route,
+                    'timestamp': time.time(),
+                    'severity': self._calculate_severity(prefix, route)
+                })
+        
+        return anomalies
+    
+    def _setup_rpki_validation(self):
+        """Setup Resource Public Key Infrastructure validation"""
+        return {
+            'enabled': True,
+            'cache_servers': ['rpki1.example.com', 'rpki2.example.com'],
+            'validation_policy': 'reject-invalid',
+            'max_prefix_length': 24
+        }
+    
+    def _configure_peer_auth(self, peer_info):
+        """Configure peer authentication"""
+        return {
+            'method': 'MD5',
+            'keys': self._generate_auth_keys(peer_info),
+            'key_rotation': '24h',
+            'strict_mode': True
+        }
+    
+    def _setup_route_filters(self):
+        """Setup route filters"""
+        return {
+            'inbound': self._create_inbound_filters(),
+            'outbound': self._create_outbound_filters(),
+            'prefix_lists': self._create_prefix_lists(),
+            'as_path_filters': self._create_as_path_filters()
+        }
+    
+    def _verify_origin(self, update):
+        """Verify route origin authenticity"""
+        # Implementation details
+        pass
+    
+    def _check_path_attributes(self, update):
+        """Check BGP path attributes"""
+        # Implementation details
+        pass
+    
+    def _apply_route_filters(self, update):
+        """Apply configured route filters"""
+        # Implementation details
+        pass
+    
+    def _is_suspicious_change(self, prefix, route):
+        """Detect suspicious routing changes"""
+        # Implementation details
+        pass
+    
+    def _calculate_severity(self, prefix, route):
+        """Calculate severity of routing change"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Routing Security Guidelines:</h3>
+                    <ul>
+                        <li>Implement RPKI validation</li>
+                        <li>Use strong peer authentication</li>
+                        <li>Apply strict route filtering</li>
+                        <li>Monitor routing changes</li>
+                        <li>Maintain up-to-date IRR records</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson8-quiz">
+                    <div class="question" data-correct="c">
+                        <p>What is the primary purpose of RPKI in routing security?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Encrypt routing updates
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Speed up routing convergence
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Validate route origins
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Monitor network traffic
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>Which BGP security feature helps prevent route leaks?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                MD5 authentication
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Route filtering
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                TTL security
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                BFD monitoring
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson7.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson9.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

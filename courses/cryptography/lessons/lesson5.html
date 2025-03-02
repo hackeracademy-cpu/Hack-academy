@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Management and Distribution - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Key Management and Distribution</h1>
+            
+            <section class="lesson-section">
+                <h2>Key Management Fundamentals</h2>
+                <p>Proper key management is crucial for maintaining the security of cryptographic systems. This includes key generation, storage, distribution, and retirement.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Management Lifecycle</h2>
+                <div class="info-box">
+                    <h3>Key Lifecycle Stages:</h3>
+                    <ul>
+                        <li><strong>Generation:</strong> Creating cryptographically secure keys</li>
+                        <li><strong>Distribution:</strong> Securely sharing keys with authorized parties</li>
+                        <li><strong>Storage:</strong> Protecting keys at rest</li>
+                        <li><strong>Usage:</strong> Employing keys for cryptographic operations</li>
+                        <li><strong>Rotation:</strong> Regularly updating keys</li>
+                        <li><strong>Revocation:</strong> Invalidating compromised keys</li>
+                        <li><strong>Destruction:</strong> Securely removing retired keys</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Distribution Methods</h2>
+                <div class="info-box">
+                    <h3>Common Approaches:</h3>
+                    <ul>
+                        <li><strong>Pre-shared Keys (PSK):</strong> Keys distributed in advance</li>
+                        <li><strong>Public Key Infrastructure (PKI):</strong> Using certificates and CAs</li>
+                        <li><strong>Diffie-Hellman Key Exchange:</strong> Dynamic key agreement</li>
+                        <li><strong>Key Derivation Functions (KDF):</strong> Generating keys from shared secrets</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import dh
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+import os
+
+def key_management_example():
+    # Key Derivation Example
+    salt = os.urandom(16)
+    password = b"secure-password"
+    
+    # Create KDF
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000
+    )
+    key = kdf.derive(password)
+    
+    # Diffie-Hellman Key Exchange Example
+    # Generate parameters
+    parameters = dh.generate_parameters(generator=2, key_size=2048)
+    
+    # Generate key pairs for Alice and Bob
+    alice_private = parameters.generate_private_key()
+    bob_private = parameters.generate_private_key()
+    
+    # Exchange public keys
+    alice_public = alice_private.public_key()
+    bob_public = bob_private.public_key()
+    
+    # Generate shared keys
+    alice_shared = alice_private.exchange(bob_public)
+    bob_shared = bob_private.exchange(alice_public)
+    
+    # Verify shared keys match
+    return alice_shared == bob_shared</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Use hardware security modules (HSM) for key storage when possible</li>
+                        <li>Implement proper access controls for key management systems</li>
+                        <li>Maintain detailed key usage and rotation logs</li>
+                        <li>Use strong key derivation functions with appropriate parameters</li>
+                        <li>Never store encryption keys alongside encrypted data</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="c">
+                        <p>Which key management stage involves securely removing old keys from the system?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Rotation
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Revocation
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Destruction
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Distribution
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>What is the recommended way to store cryptographic keys?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                In the application database
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                In a Hardware Security Module (HSM)
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                In configuration files
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                With the encrypted data
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="d">
+                        <p>Which method allows two parties to establish a shared key without prior communication?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Pre-shared Keys (PSK)
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Key Derivation Functions (KDF)
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Public Key Infrastructure (PKI)
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Diffie-Hellman Key Exchange
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson4.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson6.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptographic Protocols - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Cryptographic Protocols</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding TLS/SSL</h2>
+                <p>Transport Layer Security (TLS) and its predecessor Secure Sockets Layer (SSL) are cryptographic protocols designed to provide secure communication over computer networks.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>TLS Protocol Components</h2>
+                <div class="info-box">
+                    <h3>Key Elements:</h3>
+                    <ul>
+                        <li><strong>Handshake Protocol:</strong> Establishes secure connection</li>
+                        <li><strong>Record Protocol:</strong> Encrypts and authenticates data</li>
+                        <li><strong>Alert Protocol:</strong> Handles errors and warnings</li>
+                        <li><strong>Change Cipher Spec Protocol:</strong> Updates encryption settings</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>TLS Handshake Process</h2>
+                <div class="info-box">
+                    <h3>Steps:</h3>
+                    <ul>
+                        <li><strong>Client Hello:</strong> Supported cipher suites and TLS version</li>
+                        <li><strong>Server Hello:</strong> Selected cipher suite and certificate</li>
+                        <li><strong>Certificate Verification:</strong> Client validates server certificate</li>
+                        <li><strong>Key Exchange:</strong> Establish shared secret</li>
+                        <li><strong>Session Keys:</strong> Generate encryption keys</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+import ssl
+import socket
+from http.client import HTTPSConnection
+
+def tls_example():
+    # Create SSL context
+    context = ssl.create_default_context()
+    
+    # Configure TLS settings
+    context.minimum_version = ssl.TLSVersion.TLSv1_2
+    context.verify_mode = ssl.CERT_REQUIRED
+    context.check_hostname = True
+    
+    # Create secure connection
+    def secure_request(host, path):
+        try:
+            # Create HTTPS connection
+            conn = HTTPSConnection(host, context=context)
+            
+            # Send request
+            conn.request("GET", path)
+            response = conn.getresponse()
+            
+            # Verify connection info
+            cert = conn.sock.getpeercert()
+            cipher = conn.sock.cipher()
+            version = conn.sock.version()
+            
+            print(f"TLS Version: {version}")
+            print(f"Cipher Suite: {cipher[0]}")
+            print(f"Certificate Subject: {cert['subject']}")
+            
+            return response.read()
+            
+        except ssl.SSLError as e:
+            print(f"SSL Error: {e}")
+            return None
+        finally:
+            conn.close()
+    
+    return secure_request</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Use TLS 1.2 or higher (avoid SSL and older TLS versions)</li>
+                        <li>Enable certificate validation and hostname verification</li>
+                        <li>Use strong cipher suites with forward secrecy</li>
+                        <li>Implement proper certificate management</li>
+                        <li>Regular security updates and vulnerability scanning</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="b">
+                        <p>Which TLS version should be the minimum supported version in modern applications?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                TLS 1.0
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                TLS 1.2
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                SSL 3.0
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                SSL 2.0
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>What is the first step in the TLS handshake process?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Client Hello
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Server Hello
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Certificate Exchange
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Key Exchange
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which protocol component handles errors in TLS?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Record Protocol
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Handshake Protocol
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Alert Protocol
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Change Cipher Spec Protocol
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson5.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson7.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

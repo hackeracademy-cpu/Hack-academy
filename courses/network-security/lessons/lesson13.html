@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Security Testing - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Network Security Testing</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Security Testing</h2>
+                <p>Network security testing involves systematically identifying vulnerabilities, assessing security controls, and validating the effectiveness of security measures through various testing methodologies and tools.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Components</h2>
+                <div class="info-box">
+                    <h3>Essential Elements:</h3>
+                    <ul>
+                        <li><strong>Vulnerability Scanning:</strong> Automated testing</li>
+                        <li><strong>Penetration Testing:</strong> Manual assessment</li>
+                        <li><strong>Security Auditing:</strong> Control validation</li>
+                        <li><strong>Compliance Testing:</strong> Standard verification</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+class SecurityTesting:
+    def __init__(self):
+        self.scan_results = {}
+        self.vulnerabilities = {}
+        self.test_cases = {}
+        self.reports = {}
+        
+    def conduct_vulnerability_scan(self, target_config):
+        """Conduct vulnerability scan"""
+        scan = {
+            'id': str(uuid.uuid4()),
+            'target': target_config['target'],
+            'scope': target_config['scope'],
+            'type': target_config['scan_type'],
+            'options': target_config.get('options', {})
+        }
+        
+        try:
+            results = self._execute_scan(scan)
+            self.scan_results[scan['id']] = results
+            self._analyze_vulnerabilities(results)
+            return self._generate_scan_report(scan['id'])
+        except Exception as e:
+            return {'status': 'failed', 'error': str(e)}
+    
+    def perform_penetration_test(self, test_plan):
+        """Execute penetration test"""
+        test = {
+            'id': str(uuid.uuid4()),
+            'plan': test_plan,
+            'phases': self._create_test_phases(test_plan),
+            'findings': [],
+            'status': 'in_progress'
+        }
+        
+        try:
+            for phase in test['phases']:
+                results = self._execute_test_phase(phase)
+                test['findings'].extend(results)
+                
+            test['status'] = 'completed'
+            return self._compile_pentest_report(test)
+        except Exception as e:
+            test['status'] = 'failed'
+            test['error'] = str(e)
+            return test
+    
+    def audit_security_controls(self, audit_config):
+        """Audit security controls"""
+        audit = {
+            'id': str(uuid.uuid4()),
+            'controls': audit_config['controls'],
+            'standards': audit_config['standards'],
+            'results': {}
+        }
+        
+        for control in audit['controls']:
+            result = self._test_security_control(control)
+            audit['results'][control['id']] = result
+            
+        return self._generate_audit_report(audit)
+    
+    def _execute_scan(self, scan):
+        """Execute vulnerability scan"""
+        scanner = self._initialize_scanner(scan['type'])
+        results = []
+        
+        for target in self._parse_targets(scan['target']):
+            scan_result = scanner.scan(
+                target=target,
+                options=scan['options'],
+                scope=scan['scope']
+            )
+            results.append(scan_result)
+            
+        return self._process_scan_results(results)
+    
+    def _create_test_phases(self, test_plan):
+        """Create penetration test phases"""
+        phases = []
+        
+        for phase in test_plan['phases']:
+            phases.append({
+                'id': str(uuid.uuid4()),
+                'name': phase['name'],
+                'tests': self._prepare_test_cases(phase['tests']),
+                'dependencies': phase.get('dependencies', []),
+                'tools': phase.get('tools', [])
+            })
+            
+        return phases
+    
+    def _test_security_control(self, control):
+        """Test individual security control"""
+        test_cases = self._get_control_test_cases(control)
+        results = []
+        
+        for test in test_cases:
+            result = self._execute_control_test(test)
+            results.append(result)
+            
+        return self._evaluate_control_effectiveness(results)
+    
+    def _analyze_vulnerabilities(self, scan_results):
+        """Analyze discovered vulnerabilities"""
+        for result in scan_results:
+            if result['vulnerabilities']:
+                for vuln in result['vulnerabilities']:
+                    vuln_id = vuln['id']
+                    if vuln_id not in self.vulnerabilities:
+                        self.vulnerabilities[vuln_id] = {
+                            'details': vuln,
+                            'affected_systems': set(),
+                            'risk_level': self._assess_risk_level(vuln)
+                        }
+                    self.vulnerabilities[vuln_id]['affected_systems'].add(result['target'])
+    
+    def _generate_scan_report(self, scan_id):
+        """Generate vulnerability scan report"""
+        scan = self.scan_results[scan_id]
+        return {
+            'summary': self._create_scan_summary(scan),
+            'vulnerabilities': self._format_vulnerabilities(scan),
+            'recommendations': self._generate_recommendations(scan),
+            'remediation': self._create_remediation_plan(scan)
+        }
+    
+    def _compile_pentest_report(self, test):
+        """Compile penetration test report"""
+        # Implementation details
+        pass
+    
+    def _generate_audit_report(self, audit):
+        """Generate security control audit report"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Testing Guidelines:</h3>
+                    <ul>
+                        <li>Define clear test scope</li>
+                        <li>Use multiple testing methods</li>
+                        <li>Document all findings</li>
+                        <li>Prioritize remediation</li>
+                        <li>Regular testing schedule</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson13-quiz">
+                    <div class="question" data-correct="b">
+                        <p>What is the main difference between vulnerability scanning and penetration testing?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Cost of tools
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Level of automation
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Testing duration
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Report format
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Why is regular security testing important?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Improve performance
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Reduce costs
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Identify new vulnerabilities
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Increase network speed
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson12.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson14.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding HTTP - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <div class="lesson-navigation" style="margin-bottom: 2rem;">
+                <button class="nav-btn prev" onclick="window.location.href='lesson1.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson3.html'">Next Lesson</button>
+            </div>
+
+            <h1>Understanding HTTP</h1>
+            
+            <section class="lesson-section">
+                <h2>HTTP Protocol Basics</h2>
+                <p>HTTP (Hypertext Transfer Protocol) is the foundation of data communication on the web. Understanding how it works is crucial for web security.</p>
+                
+                <div class="info-box">
+                    <h3>Key HTTP Components:</h3>
+                    <ul>
+                        <li>Request Methods (GET, POST, PUT, DELETE)</li>
+                        <li>Headers</li>
+                        <li>Status Codes</li>
+                        <li>Request/Response Body</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>HTTP Headers and Security</h2>
+                <div class="code-example">
+                    <pre><code class="language-http">
+# Security-related HTTP headers
+Content-Security-Policy: default-src 'self'
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+                    </code></pre>
+                </div>
+                <p>These headers help protect against various attacks like clickjacking, XSS, and MIME-type confusion.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>HTTPS and SSL/TLS</h2>
+                <p>HTTPS adds encryption to HTTP using SSL/TLS protocols. This ensures:</p>
+                <ul>
+                    <li>Data confidentiality</li>
+                    <li>Data integrity</li>
+                    <li>Server authentication</li>
+                </ul>
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Node.js HTTPS server example
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('certificate.pem')
+};
+
+https.createServer(options, (req, res) => {
+    res.writeHead(200);
+    res.end('Hello Secure World\n');
+}).listen(443);
+                    </code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Common HTTP Vulnerabilities</h2>
+                <div class="info-box warning">
+                    <h3>Security Risks:</h3>
+                    <ul>
+                        <li>Man-in-the-Middle Attacks</li>
+                        <li>Session Hijacking</li>
+                        <li>HTTP Response Splitting</li>
+                        <li>Request Smuggling</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson2-quiz">
+                    <div class="question" data-correct="b">
+                        <p>Which protocol provides encryption for HTTP?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                FTP
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                SSL/TLS
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                SMTP
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                TCP
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which HTTP header helps prevent clickjacking attacks?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Content-Type
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Cache-Control
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                X-Frame-Options
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Accept-Encoding
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson1.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson3.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

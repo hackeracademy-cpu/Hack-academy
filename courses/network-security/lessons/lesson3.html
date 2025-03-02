@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall Architecture and Implementation - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Firewall Architecture and Implementation</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Firewalls</h2>
+                <p>Firewalls are crucial network security devices that monitor and control incoming and outgoing network traffic based on predetermined security rules.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Types of Firewalls</h2>
+                <div class="info-box">
+                    <h3>Common Firewall Types:</h3>
+                    <ul>
+                        <li><strong>Packet Filtering:</strong> Basic network layer filtering</li>
+                        <li><strong>Stateful Inspection:</strong> Connection tracking</li>
+                        <li><strong>Application Layer:</strong> Deep packet inspection</li>
+                        <li><strong>Next-Gen Firewalls:</strong> Advanced features</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+# Firewall Implementation Example
+class NextGenFirewall:
+    def __init__(self):
+        self.rules = []
+        self.connections = {}
+        self.blocked_ips = set()
+        self.allowed_services = {
+            'HTTP': 80,
+            'HTTPS': 443,
+            'SSH': 22,
+            'DNS': 53
+        }
+
+    def add_rule(self, rule):
+        """Add a new firewall rule"""
+        if self._validate_rule(rule):
+            self.rules.append(rule)
+            return True
+        return False
+
+    def process_packet(self, packet):
+        """Process incoming network packet"""
+        if self._check_blocked_ip(packet.src_ip):
+            return False
+            
+        if not self._check_state_table(packet):
+            if not self._apply_rules(packet):
+                return False
+                
+        return True
+
+    def _validate_rule(self, rule):
+        """Validate firewall rule syntax"""
+        required_fields = ['action', 'protocol', 'src_ip', 'dst_ip', 'port']
+        return all(field in rule for field in required_fields)
+
+    def _check_blocked_ip(self, ip):
+        """Check if IP is blocked"""
+        return ip in self.blocked_ips
+
+    def _check_state_table(self, packet):
+        """Check connection state table"""
+        conn_id = f"{packet.src_ip}:{packet.src_port}-{packet.dst_ip}:{packet.dst_port}"
+        return conn_id in self.connections
+
+    def _apply_rules(self, packet):
+        """Apply firewall rules to packet"""
+        for rule in self.rules:
+            if self._match_rule(rule, packet):
+                return rule['action'] == 'ALLOW'
+        return False
+
+    def _match_rule(self, rule, packet):
+        """Match packet against rule"""
+        return (
+            self._match_ip(rule['src_ip'], packet.src_ip) and
+            self._match_ip(rule['dst_ip'], packet.dst_ip) and
+            self._match_port(rule['port'], packet.dst_port) and
+            rule['protocol'] == packet.protocol
+        )
+
+    def _match_ip(self, rule_ip, packet_ip):
+        """Match IP addresses with CIDR support"""
+        # Implementation details
+        pass
+
+    def _match_port(self, rule_port, packet_port):
+        """Match port numbers with ranges"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Firewall Implementation Guidelines:</h3>
+                    <ul>
+                        <li>Default deny policy</li>
+                        <li>Regular rule review and cleanup</li>
+                        <li>Proper logging and monitoring</li>
+                        <li>Segmentation implementation</li>
+                        <li>Regular security updates</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson3-quiz">
+                    <div class="question" data-correct="a">
+                        <p>What is the recommended default firewall policy?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Deny all, allow specific
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Allow all, deny specific
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Allow everything
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                No default policy
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which type of firewall provides the most comprehensive application-level protection?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Packet filter
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Circuit-level gateway
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Next-Gen Firewall
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Stateless firewall
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson2.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson4.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

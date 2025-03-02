@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hack Academy - Learn Ethical Hacking</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="login.html" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Hack Academy</h1>
+            <p>Learn Ethical Hacking and Cybersecurity from Industry Experts</p>
+            <a href="#courses" class="cta-button">Start Learning</a>
+        </div>
+    </header>
+
+    <section id="courses" class="courses">
+        <h2>Learning Paths</h2>
+        <div class="learning-paths">
+            <div class="path-card beginner">
+                <h3>Beginner Path</h3>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <span class="progress-text">0% Complete</span>
+            </div>
+            <div class="path-card intermediate">
+                <h3>Intermediate Path</h3>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <span class="progress-text">0% Complete</span>
+            </div>
+            <div class="path-card advanced">
+                <h3>Advanced Path</h3>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <span class="progress-text">0% Complete</span>
+            </div>
+        </div>
+
+        <div class="course-filters">
+            <button class="filter-btn active" data-filter="all">All Courses</button>
+            <button class="filter-btn" data-filter="beginner">Beginner</button>
+            <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+            <button class="filter-btn" data-filter="advanced">Advanced</button>
+        </div>
+
+        <div class="course-grid">
+            <!-- Web Security Track -->
+            <div class="course-card" data-level="beginner">
+                <div class="course-header">
+                    <i class="fas fa-laptop-code"></i>
+                    <span class="level-badge beginner">Beginner</span>
+                </div>
+                <h3>Web Security Fundamentals</h3>
+                <p>Learn about XSS, SQL injection, and CSRF attacks</p>
+                <div class="course-details">
+                    <div class="lessons">
+                        <i class="fas fa-book"></i>
+                        <span>12 Lessons</span>
+                    </div>
+                    <div class="duration">
+                        <i class="fas fa-clock"></i>
+                        <span>6 Hours</span>
+                    </div>
+                </div>
+                <div class="course-topics">
+                    <h4>You'll Learn:</h4>
+                    <ul>
+                        <li>Understanding Web Vulnerabilities</li>
+                        <li>Cross-Site Scripting (XSS)</li>
+                        <li>SQL Injection Basics</li>
+                        <li>CSRF Protection</li>
+                        <li>Input Validation</li>
+                        <li>Security Headers</li>
+                        <li>Secure File Upload</li>
+                    </ul>
+                </div>
+                <a href="courses/web-security/lessons/lesson1.html" class="start-course-btn" data-course="web-security">Start Course</a>
+            </div>
+
+            <!-- Network Security Track -->
+            <div class="course-card" data-level="intermediate">
+                <div class="course-header">
+                    <i class="fas fa-network-wired"></i>
+                    <span class="level-badge intermediate">Intermediate</span>
+                </div>
+                <h3>Network Security</h3>
+                <p>Master network protocols and security measures</p>
+                <div class="course-details">
+                    <div class="lessons">
+                        <i class="fas fa-book"></i>
+                        <span>15 Lessons</span>
+                    </div>
+                    <div class="duration">
+                        <i class="fas fa-clock"></i>
+                        <span>8 Hours</span>
+                    </div>
+                </div>
+                <div class="course-topics">
+                    <h4>You'll Learn:</h4>
+                    <ul>
+                        <li>Network Architecture</li>
+                        <li>Packet Analysis</li>
+                        <li>Firewall Configuration</li>
+                        <li>Intrusion Detection</li>
+                    </ul>
+                </div>
+                <a href="courses/network-security/lessons/lesson1.html" class="start-course-btn" data-course="network-security">Start Course</a>
+            </div>
+
+            <!-- Cryptography Track -->
+            <div class="course-card" data-level="advanced">
+                <div class="course-header">
+                    <i class="fas fa-lock"></i>
+                    <span class="level-badge advanced">Advanced</span>
+                </div>
+                <h3>Cryptography Basics</h3>
+                <p>Understand encryption and secure communication</p>
+                <div class="course-details">
+                    <div class="lessons">
+                        <i class="fas fa-book"></i>
+                        <span>10 Lessons</span>
+                    </div>
+                    <div class="duration">
+                        <i class="fas fa-clock"></i>
+                        <span>5 Hours</span>
+                    </div>
+                </div>
+                <div class="course-topics">
+                    <h4>You'll Learn:</h4>
+                    <ul>
+                        <li>Encryption Algorithms</li>
+                        <li>Public Key Infrastructure</li>
+                        <li>Hash Functions</li>
+                        <li>Digital Signatures</li>
+                    </ul>
+                </div>
+                <a href="courses/cryptography/lessons/lesson1.html" class="start-course-btn" data-course="cryptography">Start Course</a>
+            </div>
+
+            <!-- Malware Analysis -->
+            <div class="course-card" data-level="advanced">
+                <div class="course-header">
+                    <i class="fas fa-bug"></i>
+                    <span class="level-badge advanced">Advanced</span>
+                </div>
+                <h3>Malware Analysis</h3>
+                <p>Learn to analyze and understand malicious software</p>
+                <div class="course-details">
+                    <div class="lessons">
+                        <i class="fas fa-book"></i>
+                        <span>20 Lessons</span>
+                    </div>
+                    <div class="duration">
+                        <i class="fas fa-clock"></i>
+                        <span>12 Hours</span>
+                    </div>
+                </div>
+                <div class="course-topics">
+                    <h4>You'll Learn:</h4>
+                    <ul>
+                        <li>Static Analysis</li>
+                        <li>Dynamic Analysis</li>
+                        <li>Reverse Engineering</li>
+                        <li>Malware Types</li>
+                    </ul>
+                </div>
+                <a href="#" class="start-course-btn">Start Course</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Us</h2>
+        <p>Hack Academy is dedicated to teaching ethical hacking and cybersecurity skills in a responsible manner. Our mission is to create a safer digital world by educating the next generation of security professionals.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Hack Academy. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

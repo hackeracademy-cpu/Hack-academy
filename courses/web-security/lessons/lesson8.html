@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Validation - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Input Validation</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Input Validation</h2>
+                <p>Input validation is the process of ensuring that application input meets specified requirements and is safe to process. Proper validation helps prevent injection attacks, buffer overflows, and other security vulnerabilities.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Types of Input Validation</h2>
+                <div class="info-box">
+                    <h3>Validation Categories:</h3>
+                    <ul>
+                        <li><strong>Syntactic Validation:</strong> Correct format and type</li>
+                        <li><strong>Semantic Validation:</strong> Business rule compliance</li>
+                        <li><strong>White List Validation:</strong> Allow known good</li>
+                        <li><strong>Black List Validation:</strong> Block known bad</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Examples</h2>
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Example of comprehensive input validation
+const validator = require('validator');
+
+class InputValidator {
+    static validateUserInput(input) {
+        // Sanitize and validate email
+        if (!validator.isEmail(input.email)) {
+            throw new Error('Invalid email format');
+        }
+
+        // Validate username (alphanumeric, 3-20 chars)
+        if (!validator.isAlphanumeric(input.username) || 
+            !validator.isLength(input.username, {min: 3, max: 20})) {
+            throw new Error('Invalid username format');
+        }
+
+        // Validate age (numeric, reasonable range)
+        if (!validator.isInt(input.age, {min: 13, max: 120})) {
+            throw new Error('Invalid age');
+        }
+
+        // Sanitize and validate URL
+        if (input.website && !validator.isURL(input.website)) {
+            throw new Error('Invalid URL format');
+        }
+
+        return {
+            email: validator.normalizeEmail(input.email),
+            username: validator.trim(input.username),
+            age: parseInt(input.age),
+            website: input.website ? validator.trim(input.website) : null
+        };
+    }
+
+    static sanitizeHtmlContent(content) {
+        // Remove potentially dangerous HTML
+        return validator.escape(content);
+    }
+
+    static validateFileUpload(file) {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (!allowedTypes.includes(file.mimetype)) {
+            throw new Error('Invalid file type');
+        }
+
+        if (file.size > maxSize) {
+            throw new Error('File too large');
+        }
+
+        return true;
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Input Validation Guidelines:</h3>
+                    <ul>
+                        <li>Validate on both client and server side</li>
+                        <li>Use parameterized queries for databases</li>
+                        <li>Implement strict type checking</li>
+                        <li>Sanitize output before display</li>
+                        <li>Use appropriate encoding for context</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson8-quiz">
+                    <div class="question" data-correct="b">
+                        <p>Which approach is generally more secure for input validation?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Blacklist validation
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Whitelist validation
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                No validation
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Client-side only validation
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="d">
+                        <p>Where should input validation be performed?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Client-side only
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Server-side only
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Database level only
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                All layers of the application
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson7.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson9.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

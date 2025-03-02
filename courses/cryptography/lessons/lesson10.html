@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Cryptography - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Blockchain Cryptography</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Blockchain Cryptography</h2>
+                <p>Blockchain technology relies heavily on cryptographic principles to ensure security, immutability, and trust in a decentralized network.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Core Components</h2>
+                <div class="info-box">
+                    <h3>Key Elements:</h3>
+                    <ul>
+                        <li><strong>Hash Functions:</strong> SHA-256 for block linking</li>
+                        <li><strong>Digital Signatures:</strong> Transaction authentication</li>
+                        <li><strong>Merkle Trees:</strong> Efficient verification</li>
+                        <li><strong>Public Key Cryptography:</strong> Wallet addresses</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Consensus Mechanisms</h2>
+                <div class="info-box">
+                    <h3>Common Types:</h3>
+                    <ul>
+                        <li><strong>Proof of Work:</strong> Computational puzzles</li>
+                        <li><strong>Proof of Stake:</strong> Token-based validation</li>
+                        <li><strong>Delegated Proof of Stake:</strong> Elected validators</li>
+                        <li><strong>Practical Byzantine Fault Tolerance:</strong> Voting-based consensus</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+import hashlib
+import json
+from time import time
+from typing import List, Dict
+
+class Block:
+    def __init__(self, index: int, transactions: List[Dict], timestamp: float, previous_hash: str):
+        self.index = index
+        self.transactions = transactions
+        self.timestamp = timestamp
+        self.previous_hash = previous_hash
+        self.nonce = 0
+        self.hash = self.calculate_hash()
+    
+    def calculate_hash(self) -> str:
+        """Calculate block hash using SHA-256"""
+        block_string = json.dumps(self.__dict__, sort_keys=True)
+        return hashlib.sha256(block_string.encode()).hexdigest()
+
+class Blockchain:
+    def __init__(self):
+        self.chain = [self.create_genesis_block()]
+        self.difficulty = 4  # Number of leading zeros required
+        self.pending_transactions = []
+        self.mining_reward = 10
+    
+    def create_genesis_block(self) -> Block:
+        """Create the first block in the chain"""
+        return Block(0, [], time(), "0")
+    
+    def get_latest_block(self) -> Block:
+        """Get the most recent block"""
+        return self.chain[-1]
+    
+    def mine_pending_transactions(self, miner_address: str):
+        """Mine pending transactions and add new block"""
+        block = Block(
+            len(self.chain),
+            self.pending_transactions,
+            time(),
+            self.get_latest_block().hash
+        )
+        
+        # Proof of Work
+        while block.hash[:self.difficulty] != "0" * self.difficulty:
+            block.nonce += 1
+            block.hash = block.calculate_hash()
+        
+        print(f"Block mined! Hash: {block.hash}")
+        self.chain.append(block)
+        
+        # Reset pending transactions and reward miner
+        self.pending_transactions = [
+            {"from": "network", "to": miner_address, "amount": self.mining_reward}
+        ]
+    
+    def add_transaction(self, sender: str, recipient: str, amount: float):
+        """Add new transaction to pending transactions"""
+        self.pending_transactions.append({
+            "from": sender,
+            "to": recipient,
+            "amount": amount
+        })
+    
+    def get_balance(self, address: str) -> float:
+        """Calculate balance for an address"""
+        balance = 0
+        for block in self.chain:
+            for transaction in block.transactions:
+                if transaction["from"] == address:
+                    balance -= transaction["amount"]
+                if transaction["to"] == address:
+                    balance += transaction["amount"]
+        return balance
+    
+    def is_chain_valid(self) -> bool:
+        """Verify the integrity of the blockchain"""
+        for i in range(1, len(self.chain)):
+            current_block = self.chain[i]
+            previous_block = self.chain[i-1]
+            
+            # Verify current block hash
+            if current_block.hash != current_block.calculate_hash():
+                return False
+            
+            # Verify chain linkage
+            if current_block.previous_hash != previous_block.hash:
+                return False
+        
+        return True</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Use strong cryptographic primitives</li>
+                        <li>Implement proper key management</li>
+                        <li>Validate all transactions and blocks</li>
+                        <li>Protect private keys securely</li>
+                        <li>Monitor for potential attacks</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="a">
+                        <p>Which hash function is commonly used in blockchain technology?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                SHA-256
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                MD5
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                CRC32
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                ROT13
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>What is the purpose of a Merkle Tree in blockchain?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Store transactions
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Generate private keys
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Efficient verification
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Mine new blocks
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>Which consensus mechanism uses computational puzzles?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Proof of Stake
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Proof of Work
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Delegated Proof of Stake
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Byzantine Fault Tolerance
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson9.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson11.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

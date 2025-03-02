@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure File Upload - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Secure File Upload</h1>
+            
+            <section class="lesson-section">
+                <h2>File Upload Security Risks</h2>
+                <p>File uploads present significant security risks including malware distribution, server-side code execution, and denial of service attacks. Implementing proper security measures is crucial for protecting your application and users.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Considerations</h2>
+                <div class="info-box">
+                    <h3>Key Areas:</h3>
+                    <ul>
+                        <li><strong>File Type Validation:</strong> Verify MIME types and extensions</li>
+                        <li><strong>Size Restrictions:</strong> Prevent DoS attacks</li>
+                        <li><strong>Storage Location:</strong> Secure file storage paths</li>
+                        <li><strong>File Processing:</strong> Safe handling of uploaded content</li>
+                        <li><strong>Access Control:</strong> Proper file permissions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Example of secure file upload handling
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const crypto = require('crypto');
+
+// Configure storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        // Generate random filename
+        crypto.randomBytes(16, (err, raw) => {
+            if (err) return cb(err);
+            cb(null, raw.toString('hex') + path.extname(file.originalname));
+        });
+    }
+});
+
+// Configure upload restrictions
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB limit
+        files: 1 // Max one file per request
+    },
+    fileFilter: (req, file, cb) => {
+        // Validate file type
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(file.mimetype)) {
+            return cb(new Error('Invalid file type'), false);
+        }
+        cb(null, true);
+    }
+});
+
+// Handle file upload
+app.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        // Validate file content
+        const buffer = req.file.buffer;
+        const fileSignature = buffer.toString('hex', 0, 4);
+        
+        // Check file signatures (magic numbers)
+        const validSignatures = {
+            'ffd8ffe0': 'image/jpeg',
+            '89504e47': 'image/png',
+            '47494638': 'image/gif'
+        };
+
+        if (!Object.keys(validSignatures).includes(fileSignature)) {
+            // Delete invalid file
+            await fs.unlink(req.file.path);
+            return res.status(400).json({ error: 'Invalid file content' });
+        }
+
+        // Process file (e.g., resize, optimize)
+        // Store file metadata in database
+        
+        res.json({ 
+            message: 'File uploaded successfully',
+            filename: req.file.filename
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Upload failed' });
+    }
+});</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Security Measures:</h3>
+                    <ul>
+                        <li>Validate file types thoroughly</li>
+                        <li>Implement strict size limits</li>
+                        <li>Use secure file naming</li>
+                        <li>Scan for malware</li>
+                        <li>Store files outside web root</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson10-quiz">
+                    <div class="question" data-correct="c">
+                        <p>Which is NOT a secure practice for file uploads?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Validating file types
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Limiting file size
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Using original filenames
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Checking file signatures
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>Why should uploaded files be stored outside the web root?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                To save disk space
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                To prevent direct file access
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                To improve load times
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                To organize files better
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson9.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson11.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

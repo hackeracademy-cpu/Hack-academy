@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Security Automation - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Network Security Automation</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Security Automation</h2>
+                <p>Network security automation leverages scripting and tools to automate routine security tasks, incident response, and policy enforcement, improving efficiency and reducing human error in network security operations.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Components</h2>
+                <div class="info-box">
+                    <h3>Essential Elements:</h3>
+                    <ul>
+                        <li><strong>Task Automation:</strong> Routine security operations</li>
+                        <li><strong>Response Orchestration:</strong> Incident handling</li>
+                        <li><strong>Policy Enforcement:</strong> Automated controls</li>
+                        <li><strong>Security Testing:</strong> Automated scanning</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+class SecurityAutomation:
+    def __init__(self):
+        self.tasks = {}
+        self.workflows = {}
+        self.schedules = {}
+        self.results = {}
+        
+    def create_automation_workflow(self, workflow_config):
+        """Create security automation workflow"""
+        if self._validate_workflow(workflow_config):
+            workflow = {
+                'id': str(uuid.uuid4()),
+                'name': workflow_config['name'],
+                'tasks': self._build_task_chain(workflow_config['tasks']),
+                'triggers': workflow_config['triggers'],
+                'conditions': workflow_config['conditions'],
+                'actions': workflow_config['actions']
+            }
+            
+            self.workflows[workflow['id']] = workflow
+            return self._deploy_workflow(workflow)
+        return False
+        
+    def schedule_security_tasks(self, schedule_config):
+        """Schedule automated security tasks"""
+        schedule = {
+            'id': str(uuid.uuid4()),
+            'tasks': schedule_config['tasks'],
+            'frequency': schedule_config['frequency'],
+            'priority': schedule_config['priority'],
+            'dependencies': schedule_config['dependencies']
+        }
+        
+        if self._validate_schedule(schedule):
+            self.schedules[schedule['id']] = schedule
+            return self._activate_schedule(schedule)
+        return False
+        
+    def execute_automated_response(self, incident):
+        """Execute automated incident response"""
+        response_plan = self._create_response_plan(incident)
+        if not response_plan:
+            return False
+            
+        execution_result = {
+            'id': str(uuid.uuid4()),
+            'incident': incident,
+            'plan': response_plan,
+            'actions': [],
+            'status': 'in_progress'
+        }
+        
+        try:
+            for action in response_plan['actions']:
+                result = self._execute_action(action)
+                execution_result['actions'].append(result)
+                
+            execution_result['status'] = 'completed'
+            self.results[execution_result['id']] = execution_result
+            return True
+            
+        except Exception as e:
+            execution_result['status'] = 'failed'
+            execution_result['error'] = str(e)
+            self.results[execution_result['id']] = execution_result
+            return False
+    
+    def monitor_automation_status(self):
+        """Monitor automation system status"""
+        return {
+            'workflows': self._check_workflow_status(),
+            'schedules': self._check_schedule_status(),
+            'tasks': self._check_task_status(),
+            'performance': self._analyze_automation_performance()
+        }
+    
+    def _build_task_chain(self, tasks):
+        """Build chain of automated tasks"""
+        task_chain = []
+        for task in tasks:
+            if self._validate_task(task):
+                task_chain.append({
+                    'id': str(uuid.uuid4()),
+                    'type': task['type'],
+                    'config': task['config'],
+                    'retry_policy': task.get('retry_policy', {}),
+                    'timeout': task.get('timeout', 300)
+                })
+        return task_chain
+    
+    def _create_response_plan(self, incident):
+        """Create automated response plan"""
+        severity = self._assess_incident_severity(incident)
+        response_templates = self._get_response_templates(severity)
+        
+        return {
+            'id': str(uuid.uuid4()),
+            'severity': severity,
+            'actions': self._compile_response_actions(response_templates, incident),
+            'rollback': self._create_rollback_plan(response_templates)
+        }
+    
+    def _execute_action(self, action):
+        """Execute automated action"""
+        handlers = {
+            'firewall': self._handle_firewall_action,
+            'isolation': self._handle_isolation_action,
+            'notification': self._handle_notification_action,
+            'remediation': self._handle_remediation_action
+        }
+        
+        if action['type'] in handlers:
+            return handlers[action['type']](action['config'])
+        return {'status': 'skipped', 'reason': 'unsupported_action'}
+    
+    def _analyze_automation_performance(self):
+        """Analyze automation system performance"""
+        metrics = {
+            'execution_time': self._calculate_execution_times(),
+            'success_rate': self._calculate_success_rate(),
+            'resource_usage': self._monitor_resource_usage(),
+            'reliability': self._assess_system_reliability()
+        }
+        
+        return self._generate_performance_report(metrics)
+    
+    def _validate_workflow(self, workflow):
+        """Validate workflow configuration"""
+        # Implementation details
+        pass
+    
+    def _validate_schedule(self, schedule):
+        """Validate schedule configuration"""
+        # Implementation details
+        pass
+    
+    def _check_workflow_status(self):
+        """Check workflow execution status"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Automation Guidelines:</h3>
+                    <ul>
+                        <li>Test automation workflows</li>
+                        <li>Implement error handling</li>
+                        <li>Monitor automation performance</li>
+                        <li>Document automated processes</li>
+                        <li>Maintain rollback capabilities</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson12-quiz">
+                    <div class="question" data-correct="c">
+                        <p>What is a key benefit of security automation?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Reduced network speed
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Increased manual work
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Reduced human error
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Higher costs
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>Why is rollback capability important in automation?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Improve performance
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Recover from failures
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Increase speed
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Save resources
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson11.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson13.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

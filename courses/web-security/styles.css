@@ -1,0 +1,317 @@
+/* Lesson page layout */
+.lesson-page {
+    padding-top: 60px;
+    min-height: 100vh;
+    background: #f9f9f9;
+}
+
+.lesson-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Sidebar styles */
+.lesson-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    height: calc(100vh - 100px);
+    position: sticky;
+    top: 80px;
+    overflow-y: auto;
+}
+
+.course-progress {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.lesson-list h4 {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.lesson-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.lesson-list li {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.lesson-list li:hover {
+    background: #f5f5f5;
+}
+
+.lesson-list li.active {
+    background: #e3fcef;
+    color: #00cc6a;
+    font-weight: bold;
+}
+
+.lesson-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lesson-check.completed {
+    background: #00ff88;
+    border-color: #00ff88;
+    color: white;
+}
+
+/* Main content styles */
+.lesson-content {
+    flex: 1;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.lesson-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.lesson-meta {
+    display: flex;
+    gap: 1rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.lesson-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lesson-section {
+    margin-bottom: 3rem;
+}
+
+.lesson-section h2 {
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
+/* Info box styles */
+.info-box {
+    background: #f8f9fa;
+    border-left: 4px solid #00ff88;
+    padding: 1rem;
+    margin: 1rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.info-box i {
+    color: #00ff88;
+    font-size: 1.2rem;
+}
+
+/* Vulnerability cards */
+.vulnerability-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.vulnerability-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.vulnerability-card i {
+    font-size: 2rem;
+    color: #00ff88;
+    margin-bottom: 1rem;
+}
+
+.vulnerability-card h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* Code example styles */
+.code-example {
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.code-example h4 {
+    padding: 1rem;
+    margin: 0;
+    background: #1a1a1a;
+    color: white;
+}
+
+.code-example pre {
+    margin: 0;
+    padding: 1rem;
+}
+
+/* Quiz section styles */
+.quiz-section {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.question {
+    margin-bottom: 2rem;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.option:hover {
+    border-color: #00ff88;
+}
+
+.option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+}
+
+.feedback {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+    display: none;
+}
+
+.feedback.correct {
+    display: block;
+    background: #e3fcef;
+    color: #00cc6a;
+}
+
+.feedback.incorrect {
+    display: block;
+    background: #ffe5e5;
+    color: #ff4444;
+}
+
+.submit-quiz {
+    background: #00ff88;
+    color: #1a1a1a;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.submit-quiz:hover {
+    background: #00cc6a;
+}
+
+/* Navigation buttons */
+.lesson-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: #f8f9fa;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nav-btn:not(:disabled):hover {
+    background: #00ff88;
+    color: #1a1a1a;
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .lesson-container {
+        flex-direction: column;
+    }
+
+    .lesson-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .lesson-container {
+        padding: 1rem;
+    }
+
+    .vulnerability-list {
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-navigation {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-btn {
+        width: 100%;
+        justify-content: center;
+    }
+} 

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Cryptography - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Quantum Cryptography</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Quantum Cryptography</h2>
+                <p>Quantum cryptography leverages principles of quantum mechanics to provide theoretically unbreakable encryption and secure key distribution methods.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Quantum Key Distribution (QKD)</h2>
+                <div class="info-box">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li><strong>BB84 Protocol:</strong> First QKD protocol</li>
+                        <li><strong>Quantum Entanglement:</strong> Correlated quantum states</li>
+                        <li><strong>No-Cloning Theorem:</strong> Impossible to copy unknown quantum states</li>
+                        <li><strong>Quantum Superposition:</strong> Multiple states simultaneously</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Post-Quantum Cryptography</h2>
+                <div class="info-box">
+                    <h3>Quantum-Resistant Algorithms:</h3>
+                    <ul>
+                        <li><strong>Lattice-based:</strong> Based on hard lattice problems</li>
+                        <li><strong>Hash-based:</strong> Using cryptographic hash functions</li>
+                        <li><strong>Code-based:</strong> Error-correcting codes</li>
+                        <li><strong>Multivariate:</strong> Systems of polynomial equations</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import ec
+import numpy as np
+
+def quantum_resistant_example():
+    # Simulated lattice-based encryption
+    class LatticeEncryption:
+        def __init__(self, dimension):
+            self.dimension = dimension
+            # Generate random lattice basis
+            self.basis = np.random.randint(-10, 10, (dimension, dimension))
+            
+        def generate_keys(self):
+            # Generate private key (short vector)
+            self.private_key = np.random.randint(-3, 3, self.dimension)
+            # Generate public key (basis * private_key + error)
+            error = np.random.normal(0, 0.1, self.dimension)
+            self.public_key = np.dot(self.basis, self.private_key) + error
+            return self.public_key
+        
+        def encrypt(self, message, public_key):
+            # Convert message to binary
+            binary = [int(b) for b in format(message, '08b')]
+            # Add random noise
+            noise = np.random.normal(0, 0.1, len(binary))
+            # Encrypt using public key
+            return np.dot(binary, public_key) + noise
+        
+        def decrypt(self, ciphertext):
+            # Decrypt using private key
+            result = np.dot(ciphertext, self.private_key)
+            # Round to nearest binary value
+            binary = [1 if x > 0.5 else 0 for x in result]
+            # Convert back to integer
+            return int(''.join(map(str, binary)), 2)
+
+    # Example usage
+    lattice = LatticeEncryption(8)
+    public_key = lattice.generate_keys()
+    message = 42
+    
+    # Encrypt and decrypt
+    ciphertext = lattice.encrypt(message, public_key)
+    decrypted = lattice.decrypt(ciphertext)
+    
+    return message == decrypted</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Plan for quantum-safe migration</li>
+                        <li>Use hybrid cryptographic schemes</li>
+                        <li>Monitor NIST standardization progress</li>
+                        <li>Implement proper key sizes for quantum resistance</li>
+                        <li>Regular security assessments for quantum threats</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="b">
+                        <p>Which principle makes quantum key distribution theoretically secure?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Quantum Tunneling
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                No-Cloning Theorem
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Wave-Particle Duality
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Quantum Teleportation
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>Which type of post-quantum cryptography is based on hard geometric problems?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Lattice-based
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Hash-based
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Code-based
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Multivariate
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>What is the recommended approach for transitioning to quantum-safe cryptography?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Wait for quantum computers
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Remove all encryption
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Use hybrid schemes
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Ignore quantum threats
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson7.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson9.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    
+</body>
+</html> 

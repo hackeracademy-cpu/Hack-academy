@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Access Control - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Network Access Control</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding NAC</h2>
+                <p>Network Access Control (NAC) enforces security policies on devices attempting to access network resources, ensuring only compliant and authorized devices gain access.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>NAC Components</h2>
+                <div class="info-box">
+                    <h3>Key Components:</h3>
+                    <ul>
+                        <li><strong>Authentication:</strong> Device and user verification</li>
+                        <li><strong>Authorization:</strong> Access level determination</li>
+                        <li><strong>Compliance:</strong> Security policy enforcement</li>
+                        <li><strong>Remediation:</strong> Non-compliant device handling</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+# Network Access Control Implementation
+class NetworkAccessControl:
+    def __init__(self):
+        self.policies = {}
+        self.authenticated_devices = {}
+        self.quarantine_vlan = "VLAN999"
+        self.compliance_checks = {
+            'antivirus': self._check_antivirus,
+            'patches': self._check_patches,
+            'firewall': self._check_firewall,
+            'encryption': self._check_encryption
+        }
+
+    def process_device_request(self, device):
+        """Process device access request"""
+        if not self._authenticate_device(device):
+            return self._quarantine_device(device, "Authentication failed")
+            
+        if not self._check_compliance(device):
+            return self._remediate_device(device)
+            
+        return self._grant_access(device)
+
+    def _authenticate_device(self, device):
+        """Authenticate device credentials"""
+        try:
+            cert = device.get_certificate()
+            if self._verify_certificate(cert):
+                self.authenticated_devices[device.id] = {
+                    'timestamp': time.time(),
+                    'status': 'authenticated'
+                }
+                return True
+        except Exception as e:
+            self._log_auth_failure(device, str(e))
+        return False
+
+    def _check_compliance(self, device):
+        """Check device compliance with security policies"""
+        results = {}
+        for check_name, check_func in self.compliance_checks.items():
+            results[check_name] = check_func(device)
+            
+        return all(results.values())
+
+    def _remediate_device(self, device):
+        """Handle non-compliant device"""
+        issues = self._identify_compliance_issues(device)
+        remediation_plan = self._create_remediation_plan(issues)
+        
+        return {
+            'status': 'quarantined',
+            'vlan': self.quarantine_vlan,
+            'issues': issues,
+            'remediation_plan': remediation_plan
+        }
+
+    def _grant_access(self, device):
+        """Grant network access to compliant device"""
+        access_level = self._determine_access_level(device)
+        vlan = self._assign_vlan(access_level)
+        
+        return {
+            'status': 'granted',
+            'vlan': vlan,
+            'access_level': access_level,
+            'policies': self._get_applicable_policies(access_level)
+        }
+
+    def _check_antivirus(self, device):
+        """Check antivirus status"""
+        # Implementation details
+        pass
+
+    def _check_patches(self, device):
+        """Check system patches"""
+        # Implementation details
+        pass
+
+    def _check_firewall(self, device):
+        """Check firewall status"""
+        # Implementation details
+        pass
+
+    def _check_encryption(self, device):
+        """Check disk encryption"""
+        # Implementation details
+        pass
+
+    def _verify_certificate(self, cert):
+        """Verify device certificate"""
+        # Implementation details
+        pass
+
+    def _identify_compliance_issues(self, device):
+        """Identify specific compliance issues"""
+        # Implementation details
+        pass
+
+    def _create_remediation_plan(self, issues):
+        """Create plan to resolve compliance issues"""
+        # Implementation details
+        pass
+
+    def _determine_access_level(self, device):
+        """Determine appropriate access level"""
+        # Implementation details
+        pass
+
+    def _assign_vlan(self, access_level):
+        """Assign appropriate VLAN"""
+        # Implementation details
+        pass
+
+    def _get_applicable_policies(self, access_level):
+        """Get policies for access level"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>NAC Implementation Guidelines:</h3>
+                    <ul>
+                        <li>Strong device authentication</li>
+                        <li>Comprehensive compliance checks</li>
+                        <li>Automated remediation processes</li>
+                        <li>Regular policy updates</li>
+                        <li>Continuous monitoring</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson6-quiz">
+                    <div class="question" data-correct="b">
+                        <p>What is the primary purpose of a quarantine VLAN?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Block all traffic
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Isolate non-compliant devices
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Improve network speed
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Store network logs
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which component verifies the identity of devices and users?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Authorization
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Compliance
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Authentication
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Remediation
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson5.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson7.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

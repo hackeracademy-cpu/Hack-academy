@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Segmentation and VLANs - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Network Segmentation and VLANs</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Network Segmentation</h2>
+                <p>Network segmentation is a critical security practice that involves dividing a network into smaller, isolated segments to improve security, performance, and manageability. VLANs (Virtual Local Area Networks) are a key technology for implementing network segmentation.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Components</h2>
+                <div class="info-box">
+                    <h3>Essential Elements:</h3>
+                    <ul>
+                        <li><strong>VLAN Management:</strong> Virtual network configuration</li>
+                        <li><strong>Access Control:</strong> Inter-VLAN routing</li>
+                        <li><strong>Security Zones:</strong> Network isolation</li>
+                        <li><strong>Traffic Control:</strong> Flow management</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+class NetworkSegmentation:
+    def __init__(self):
+        self.vlans = {}
+        self.security_zones = {}
+        self.access_policies = {}
+        self.routing_rules = {}
+        
+    def create_vlan(self, vlan_id, config):
+        """Create and configure VLAN"""
+        if self._validate_vlan_config(vlan_id, config):
+            self.vlans[vlan_id] = {
+                'name': config['name'],
+                'subnet': config['subnet'],
+                'devices': set(),
+                'security_level': config['security_level'],
+                'access_rules': config['access_rules'],
+                'isolation_mode': config['isolation_mode']
+            }
+            return self._configure_vlan_network(vlan_id)
+        return False
+        
+    def manage_security_zones(self):
+        """Manage security zone configuration"""
+        zones = {
+            'high_security': self._get_high_security_vlans(),
+            'medium_security': self._get_medium_security_vlans(),
+            'low_security': self._get_low_security_vlans(),
+            'dmz': self._get_dmz_vlans()
+        }
+        
+        for zone_type, vlans in zones.items():
+            self._configure_zone_policies(zone_type, vlans)
+            self._setup_zone_isolation(zone_type, vlans)
+            
+        return self._verify_zone_configuration()
+    
+    def configure_inter_vlan_routing(self, source_vlan, target_vlan, rules):
+        """Configure routing between VLANs"""
+        if not self._check_routing_permission(source_vlan, target_vlan):
+            return False
+            
+        route_config = {
+            'source': source_vlan,
+            'target': target_vlan,
+            'acl': self._create_access_list(rules),
+            'qos': self._setup_qos_policy(rules),
+            'logging': rules.get('logging', True)
+        }
+        
+        return self._apply_routing_config(route_config)
+    
+    def monitor_segmentation(self):
+        """Monitor network segmentation"""
+        status = {
+            'vlans': self._check_vlan_status(),
+            'zones': self._check_zone_integrity(),
+            'routing': self._verify_routing_rules(),
+            'violations': self._detect_segmentation_violations()
+        }
+        
+        self._handle_monitoring_alerts(status)
+        return status
+    
+    def _validate_vlan_config(self, vlan_id, config):
+        """Validate VLAN configuration"""
+        required_fields = {'name', 'subnet', 'security_level', 'access_rules'}
+        
+        if not all(field in config for field in required_fields):
+            return False
+            
+        if not self._is_valid_vlan_id(vlan_id):
+            return False
+            
+        return True
+    
+    def _configure_zone_policies(self, zone_type, vlans):
+        """Configure security zone policies"""
+        policies = {
+            'high_security': self._high_security_policies,
+            'medium_security': self._medium_security_policies,
+            'low_security': self._low_security_policies,
+            'dmz': self._dmz_policies
+        }
+        
+        if zone_type in policies:
+            return policies[zone_type](vlans)
+        return False
+    
+    def _create_access_list(self, rules):
+        """Create access control list"""
+        acl = []
+        for rule in rules.get('access_rules', []):
+            if self._validate_acl_rule(rule):
+                acl.append(self._format_acl_entry(rule))
+        return acl
+    
+    def _setup_qos_policy(self, rules):
+        """Setup Quality of Service policy"""
+        # Implementation details
+        pass
+    
+    def _check_vlan_status(self):
+        """Check VLAN operational status"""
+        # Implementation details
+        pass
+    
+    def _verify_routing_rules(self):
+        """Verify inter-VLAN routing rules"""
+        # Implementation details
+        pass
+    
+    def _detect_segmentation_violations(self):
+        """Detect segmentation policy violations"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Segmentation Guidelines:</h3>
+                    <ul>
+                        <li>Implement least privilege access</li>
+                        <li>Maintain strict VLAN separation</li>
+                        <li>Regular security zone reviews</li>
+                        <li>Monitor inter-VLAN traffic</li>
+                        <li>Document segmentation policies</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson11-quiz">
+                    <div class="question" data-correct="b">
+                        <p>What is the primary purpose of network segmentation?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Increase network speed
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Isolate security zones
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Reduce hardware costs
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Simplify network design
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which security principle is most important in VLAN design?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Maximum connectivity
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Highest performance
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Least privilege access
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Simplified management
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson10.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson12.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

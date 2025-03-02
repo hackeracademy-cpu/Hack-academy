@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptographic Attacks and Defenses - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Cryptographic Attacks and Defenses</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Cryptographic Attacks</h2>
+                <p>Cryptographic attacks aim to exploit weaknesses in cryptographic algorithms, implementations, or protocols. Understanding these attacks is crucial for building secure systems.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Common Attack Types</h2>
+                <div class="info-box warning">
+                    <h3>Major Categories:</h3>
+                    <ul>
+                        <li><strong>Brute Force Attacks:</strong> Systematically trying all possible keys</li>
+                        <li><strong>Side Channel Attacks:</strong> Exploiting physical implementation weaknesses</li>
+                        <li><strong>Man-in-the-Middle (MITM):</strong> Intercepting and modifying communications</li>
+                        <li><strong>Timing Attacks:</strong> Analyzing execution time variations</li>
+                        <li><strong>Replay Attacks:</strong> Reusing captured valid messages</li>
+                        <li><strong>Birthday Attacks:</strong> Exploiting hash function collisions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Defense Mechanisms</h2>
+                <div class="info-box">
+                    <h3>Protection Strategies:</h3>
+                    <ul>
+                        <li><strong>Key Strengthening:</strong> Using strong keys and proper key lengths</li>
+                        <li><strong>Salt and Pepper:</strong> Adding randomness to stored credentials</li>
+                        <li><strong>Constant-time Operations:</strong> Preventing timing attacks</li>
+                        <li><strong>Perfect Forward Secrecy:</strong> Protecting past communications</li>
+                        <li><strong>Message Authentication:</strong> Ensuring data integrity</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+import hmac
+import hashlib
+import secrets
+import time
+from base64 import b64encode
+from cryptography.fernet import Fernet
+from typing import Tuple
+
+class SecureCrypto:
+    def __init__(self):
+        self.key = Fernet.generate_key()
+        self.cipher_suite = Fernet(self.key)
+        
+    def constant_time_compare(self, a: bytes, b: bytes) -> bool:
+        """
+        Perform constant-time comparison to prevent timing attacks
+        """
+        return hmac.compare_digest(a, b)
+    
+    def generate_salt(self) -> bytes:
+        """
+        Generate a cryptographically secure random salt
+        """
+        return secrets.token_bytes(16)
+    
+    def hash_password(self, password: str, salt: bytes = None) -> Tuple[bytes, bytes]:
+        """
+        Hash password with salt to prevent rainbow table attacks
+        """
+        if salt is None:
+            salt = self.generate_salt()
+        
+        # Use strong hash function with multiple iterations
+        key = hashlib.pbkdf2_hmac(
+            'sha256',
+            password.encode(),
+            salt,
+            iterations=100000,
+            dklen=32
+        )
+        return key, salt
+    
+    def encrypt_with_auth(self, data: str) -> Tuple[bytes, bytes]:
+        """
+        Encrypt data with authentication to prevent tampering
+        """
+        # Generate random IV for each encryption
+        iv = secrets.token_bytes(16)
+        
+        # Encrypt the data
+        encrypted_data = self.cipher_suite.encrypt(data.encode())
+        
+        # Create MAC for encrypted data
+        mac = hmac.new(self.key, encrypted_data, hashlib.sha256).digest()
+        
+        return encrypted_data, mac
+    
+    def decrypt_with_auth(self, encrypted_data: bytes, mac: bytes) -> str:
+        """
+        Decrypt data with MAC verification
+        """
+        # Verify MAC before decryption
+        expected_mac = hmac.new(self.key, encrypted_data, hashlib.sha256).digest()
+        
+        if not self.constant_time_compare(mac, expected_mac):
+            raise ValueError("MAC verification failed - data may be tampered")
+        
+        # Decrypt the data
+        decrypted_data = self.cipher_suite.decrypt(encrypted_data)
+        return decrypted_data.decode()
+    
+    def prevent_replay(self, message: str, timestamp: float = None) -> Tuple[bytes, float]:
+        """
+        Add timestamp to prevent replay attacks
+        """
+        if timestamp is None:
+            timestamp = time.time()
+        
+        # Combine message with timestamp
+        timestamped_message = f"{message}|{timestamp}"
+        
+        # Encrypt the timestamped message
+        encrypted_data, mac = self.encrypt_with_auth(timestamped_message)
+        
+        return encrypted_data, timestamp
+
+# Example usage
+def demo_secure_operations():
+    crypto = SecureCrypto()
+    
+    # Password hashing with salt
+    password = "MySecurePassword123"
+    hashed_password, salt = crypto.hash_password(password)
+    
+    # Verify password
+    verified_hash, _ = crypto.hash_password(password, salt)
+    is_valid = crypto.constant_time_compare(hashed_password, verified_hash)
+    print(f"Password verification: {is_valid}")
+    
+    # Secure message encryption with authentication
+    message = "Sensitive data"
+    encrypted, mac = crypto.encrypt_with_auth(message)
+    
+    # Decrypt and verify
+    decrypted = crypto.decrypt_with_auth(encrypted, mac)
+    print(f"Decrypted message: {decrypted}")
+    
+    # Prevent replay attacks
+    protected_msg, timestamp = crypto.prevent_replay(message)
+    print(f"Protected message timestamp: {timestamp}")</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Critical Guidelines:</h3>
+                    <ul>
+                        <li>Always use authenticated encryption</li>
+                        <li>Implement proper key management</li>
+                        <li>Use constant-time operations for sensitive comparisons</li>
+                        <li>Add entropy through salting and proper IV usage</li>
+                        <li>Regularly update and patch cryptographic libraries</li>
+                        <li>Conduct regular security audits</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="quiz">
+                    <div class="question" data-correct="b">
+                        <p>Which type of attack analyzes the execution time of cryptographic operations?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Brute Force Attack
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Timing Attack
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Birthday Attack
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Replay Attack
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>What is the primary purpose of adding salt to stored passwords?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Make passwords longer
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Encrypt the passwords
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Prevent rainbow table attacks
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Speed up hashing
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <p>Which technique helps prevent timing attacks?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Constant-time comparison
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Variable-length encryption
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Dynamic key generation
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Random padding
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson8.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson10.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Monitoring and IDS - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Network Monitoring and Intrusion Detection</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Network Monitoring</h2>
+                <p>Network monitoring and intrusion detection systems (IDS) are crucial components of network security that help identify and respond to potential security threats and network anomalies in real-time.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Key Components</h2>
+                <div class="info-box">
+                    <h3>Essential Elements:</h3>
+                    <ul>
+                        <li><strong>Traffic Analysis:</strong> Real-time monitoring</li>
+                        <li><strong>Pattern Recognition:</strong> Threat detection</li>
+                        <li><strong>Alert System:</strong> Incident notification</li>
+                        <li><strong>Response Actions:</strong> Threat mitigation</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+class NetworkMonitor:
+    def __init__(self):
+        self.alert_system = AlertSystem()
+        self.threat_patterns = self._load_threat_patterns()
+        self.baseline = self._establish_baseline()
+        self.active_threats = set()
+        
+    def monitor_network(self):
+        """Start network monitoring"""
+        while True:
+            traffic = self._capture_traffic()
+            analysis = self._analyze_traffic(traffic)
+            
+            if analysis['threats']:
+                self._handle_threats(analysis['threats'])
+                
+            if analysis['anomalies']:
+                self._investigate_anomalies(analysis['anomalies'])
+                
+            self._update_baseline(traffic)
+            
+    def _analyze_traffic(self, traffic):
+        """Analyze network traffic for threats"""
+        analysis = {
+            'threats': [],
+            'anomalies': [],
+            'metrics': self._calculate_metrics(traffic)
+        }
+        
+        # Pattern matching
+        for packet in traffic:
+            matches = self._match_patterns(packet)
+            if matches:
+                analysis['threats'].extend(matches)
+                
+        # Anomaly detection
+        anomalies = self._detect_anomalies(traffic)
+        if anomalies:
+            analysis['anomalies'].extend(anomalies)
+            
+        return analysis
+    
+    def _handle_threats(self, threats):
+        """Handle detected threats"""
+        for threat in threats:
+            if self._is_new_threat(threat):
+                self.active_threats.add(threat['id'])
+                self._initiate_response(threat)
+                
+            self.alert_system.send_alert({
+                'type': 'threat',
+                'severity': threat['severity'],
+                'details': threat,
+                'timestamp': time.time()
+            })
+    
+    def _investigate_anomalies(self, anomalies):
+        """Investigate detected anomalies"""
+        for anomaly in anomalies:
+            investigation = self._analyze_anomaly(anomaly)
+            
+            if investigation['risk_level'] > 7:
+                self._escalate_anomaly(anomaly)
+            else:
+                self._log_anomaly(anomaly)
+    
+    def _match_patterns(self, packet):
+        """Match packet against known threat patterns"""
+        matches = []
+        
+        for pattern in self.threat_patterns:
+            if self._pattern_matches(packet, pattern):
+                matches.append({
+                    'pattern_id': pattern['id'],
+                    'severity': pattern['severity'],
+                    'details': self._extract_match_details(packet, pattern)
+                })
+                
+        return matches
+    
+    def _detect_anomalies(self, traffic):
+        """Detect traffic anomalies"""
+        anomalies = []
+        metrics = self._calculate_metrics(traffic)
+        
+        for metric, value in metrics.items():
+            if self._is_anomalous(metric, value):
+                anomalies.append({
+                    'metric': metric,
+                    'value': value,
+                    'threshold': self.baseline[metric],
+                    'deviation': self._calculate_deviation(value, self.baseline[metric])
+                })
+                
+        return anomalies
+    
+    def _initiate_response(self, threat):
+        """Initiate automated response"""
+        response = {
+            'block_ip': self._block_malicious_ip,
+            'isolate_host': self._isolate_compromised_host,
+            'update_rules': self._update_firewall_rules
+        }
+        
+        action = self._determine_response_action(threat)
+        if action in response:
+            response[action](threat)
+    
+    def _analyze_anomaly(self, anomaly):
+        """Analyze anomaly details"""
+        # Implementation details
+        pass
+    
+    def _escalate_anomaly(self, anomaly):
+        """Escalate high-risk anomaly"""
+        # Implementation details
+        pass
+    
+    def _log_anomaly(self, anomaly):
+        """Log low-risk anomaly"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Monitoring Guidelines:</h3>
+                    <ul>
+                        <li>Establish baseline metrics</li>
+                        <li>Configure appropriate thresholds</li>
+                        <li>Implement automated responses</li>
+                        <li>Regular pattern updates</li>
+                        <li>Maintain audit logs</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson9-quiz">
+                    <div class="question" data-correct="b">
+                        <p>What is the primary purpose of establishing a network baseline?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Improve network speed
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Detect abnormal behavior
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Reduce bandwidth usage
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Configure firewalls
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which component is responsible for identifying known attack patterns?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Baseline analysis
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Traffic monitoring
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Pattern matching
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Alert system
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson8.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson10.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

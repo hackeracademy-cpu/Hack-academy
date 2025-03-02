@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN and Tunneling Protocols - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>VPN and Tunneling Protocols</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding VPNs</h2>
+                <p>Virtual Private Networks (VPNs) create secure, encrypted connections over public networks, enabling private communication and remote access to resources.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Tunneling Protocols</h2>
+                <div class="info-box">
+                    <h3>Common Protocols:</h3>
+                    <ul>
+                        <li><strong>OpenVPN:</strong> SSL/TLS-based solution</li>
+                        <li><strong>IPSec:</strong> Network layer security</li>
+                        <li><strong>WireGuard:</strong> Modern, fast VPN tunnel</li>
+                        <li><strong>L2TP/IPSec:</strong> Layer 2 tunneling</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-python">
+# VPN Server Implementation Example
+class VPNServer:
+    def __init__(self):
+        self.connections = {}
+        self.crypto_suite = {
+            'aes-256-gcm': self._aes_256_gcm,
+            'chacha20-poly1305': self._chacha20_poly1305
+        }
+        self.active_tunnels = {}
+        self.routing_table = {}
+
+    def initialize_tunnel(self, client_id, config):
+        """Initialize a new VPN tunnel"""
+        if not self._validate_client(client_id):
+            raise SecurityError("Invalid client credentials")
+            
+        tunnel = self._create_tunnel(config)
+        self.active_tunnels[client_id] = tunnel
+        return tunnel.get_config()
+
+    def handle_packet(self, packet):
+        """Process VPN packet"""
+        if not self._authenticate_packet(packet):
+            return None
+            
+        decrypted = self._decrypt_packet(packet)
+        if not decrypted:
+            return None
+            
+        return self._route_packet(decrypted)
+
+    def _create_tunnel(self, config):
+        """Create new VPN tunnel"""
+        return {
+            'crypto': self._setup_crypto(config['cipher']),
+            'mtu': config.get('mtu', 1500),
+            'keepalive': config.get('keepalive', 10),
+            'compression': config.get('compression', False)
+        }
+
+    def _setup_crypto(self, cipher):
+        """Setup cryptographic parameters"""
+        if cipher not in self.crypto_suite:
+            raise ValueError(f"Unsupported cipher: {cipher}")
+            
+        return {
+            'cipher': cipher,
+            'key': self._generate_key(),
+            'iv': self._generate_iv()
+        }
+
+    def _authenticate_packet(self, packet):
+        """Authenticate incoming packet"""
+        try:
+            header = packet.get_header()
+            return self._verify_hmac(header)
+        except Exception:
+            return False
+
+    def _decrypt_packet(self, packet):
+        """Decrypt packet payload"""
+        crypto = self.active_tunnels[packet.client_id]['crypto']
+        return self.crypto_suite[crypto['cipher']](packet.payload)
+
+    def _route_packet(self, packet):
+        """Route decrypted packet"""
+        dest = packet.get_destination()
+        if dest in self.routing_table:
+            return self._forward_packet(packet, self.routing_table[dest])
+        return None
+
+    def _generate_key(self):
+        """Generate encryption key"""
+        # Implementation details
+        pass
+
+    def _generate_iv(self):
+        """Generate initialization vector"""
+        # Implementation details
+        pass
+
+    def _verify_hmac(self, header):
+        """Verify packet HMAC"""
+        # Implementation details
+        pass
+
+    def _aes_256_gcm(self, data):
+        """AES-256-GCM encryption/decryption"""
+        # Implementation details
+        pass
+
+    def _chacha20_poly1305(self, data):
+        """ChaCha20-Poly1305 encryption/decryption"""
+        # Implementation details
+        pass</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>VPN Implementation Guidelines:</h3>
+                    <ul>
+                        <li>Strong encryption protocols</li>
+                        <li>Perfect forward secrecy</li>
+                        <li>Regular key rotation</li>
+                        <li>Secure authentication</li>
+                        <li>Traffic monitoring</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson5-quiz">
+                    <div class="question" data-correct="c">
+                        <p>Which VPN protocol is known for its simplicity and high performance?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                L2TP/IPSec
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                PPTP
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                WireGuard
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                SSTP
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="b">
+                        <p>What is Perfect Forward Secrecy (PFS)?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Unbreakable encryption
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                New keys for each session
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Fastest encryption method
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Automatic reconnection
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson4.html'">Previous Lesson</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson6.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

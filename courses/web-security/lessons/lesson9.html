@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Headers - Hack Academy</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../../../index.html">Home</a></li>
+            <li><a href="../../../index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="lesson-container">
+        <div class="lesson-content">
+            <h1>Security Headers and HTTP Security</h1>
+            
+            <section class="lesson-section">
+                <h2>Understanding Security Headers</h2>
+                <p>HTTP security headers are a fundamental aspect of web security. They help protect against various attacks including XSS, clickjacking, and information disclosure by instructing browsers how to handle your site's content.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Essential Security Headers</h2>
+                <div class="info-box">
+                    <h3>Key Headers:</h3>
+                    <ul>
+                        <li><strong>Content-Security-Policy:</strong> Controls resource loading</li>
+                        <li><strong>X-Frame-Options:</strong> Prevents clickjacking</li>
+                        <li><strong>Strict-Transport-Security:</strong> Enforces HTTPS</li>
+                        <li><strong>X-Content-Type-Options:</strong> Prevents MIME sniffing</li>
+                        <li><strong>X-XSS-Protection:</strong> XSS filtering</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Implementation Example</h2>
+                <div class="code-example">
+                    <pre><code class="language-javascript">
+// Example using Express.js
+const express = require('express');
+const helmet = require('helmet');
+const app = express();
+
+// Basic helmet setup
+app.use(helmet());
+
+// Custom CSP configuration
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+            imgSrc: ["'self'", 'data:', 'https:'],
+            connectSrc: ["'self'"],
+            fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+            objectSrc: ["'none'"],
+            mediaSrc: ["'self'"],
+            frameSrc: ["'none'"],
+        },
+    })
+);
+
+// HSTS configuration
+app.use(
+    helmet.hsts({
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true
+    })
+);
+
+// Custom headers
+app.use((req, res, next) => {
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+    next();
+});</code></pre>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Security Best Practices</h2>
+                <div class="info-box warning">
+                    <h3>Header Implementation Guidelines:</h3>
+                    <ul>
+                        <li>Always use HTTPS in production</li>
+                        <li>Implement strict CSP policies</li>
+                        <li>Regularly audit security headers</li>
+                        <li>Test header configurations</li>
+                        <li>Keep security headers up to date</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Practice Quiz</h2>
+                <div class="quiz" id="lesson9-quiz">
+                    <div class="question" data-correct="b">
+                        <p>What is the purpose of the Content-Security-Policy header?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                To encrypt data transmission
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                To control resource loading
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                To manage user sessions
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                To validate user input
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <p>Which header helps prevent clickjacking attacks?</p>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                X-XSS-Protection
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Strict-Transport-Security
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                X-Frame-Options
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                X-Content-Type-Options
+                            </label>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+
+                    <button class="submit-quiz">Submit Answers</button>
+                </div>
+            </section>
+
+            <div class="lesson-navigation">
+                <button class="nav-btn prev" onclick="window.location.href='lesson8.html'">Previous</button>
+                <button class="nav-btn next" onclick="window.location.href='lesson10.html'">Next Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

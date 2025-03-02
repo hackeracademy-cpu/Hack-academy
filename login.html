@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hack Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhYDzGu6xEPj6yJCXTFZqBw5xWQGQhFWw",
+            authDomain: "hack-academy-learning.firebaseapp.com",
+            projectId: "hack-academy-learning",
+            storageBucket: "hack-academy-learning.appspot.com",
+            messagingSenderId: "354001063904",
+            appId: "1:354001063904:web:5e32668679d96f3d6f3c3c"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header i {
+            font-size: 3rem;
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #00cc6a;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .register-link a {
+            color: #00cc6a;
+            text-decoration: none;
+        }
+
+        .error-message {
+            color: #ff4444;
+            background: #ffe5e5;
+            padding: 0.8rem;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: #00cc6a;
+            background: #e5ffe5;
+            padding: 0.8rem;
+            border-radius: 5px;
+            display: none;
+            margin-bottom: 1rem;
+        }
+
+        .or-divider {
+            text-align: center;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .or-divider::before {
+            left: 0;
+        }
+
+        .or-divider::after {
+            right: 0;
+        }
+
+        .google-login {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#courses">Courses</a></li>
+        </ul>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-user-shield"></i>
+            <h2>Login to Hack Academy</h2>
+        </div>
+        <div class="success-message" id="success-message"></div>
+        <div class="error-message" id="error-message"></div>
+        <div class="google-login">
+            <div id="g_id_onload"
+                data-client_id="354001063904-2fm2g1ob8pis7sku247frp79u2tueg7s.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handleGoogleSignIn"
+                data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="outline"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="left">
+            </div>
+        </div>
+        <div class="or-divider">OR</div>
+        <form class="login-form" id="login-form">
+            <div class="form-group">
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <div class="register-link">
+            <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Check for registration success message
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('registered') === 'true') {
+                const successMessage = document.getElementById('success-message');
+                successMessage.textContent = 'Registration successful! Please login with your credentials.';
+                successMessage.style.display = 'block';
+            }
+        });
+
+        // Handle Google Sign In
+        function handleGoogleSignIn(response) {
+            // Decode the JWT token
+            const responsePayload = decodeJwtResponse(response.credential);
+            
+            // Get existing users
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if user already exists
+            let existingUser = users.find(u => u.email === responsePayload.email);
+            
+            if (!existingUser) {
+                // Create new user if doesn't exist
+                existingUser = {
+                    username: responsePayload.email,
+                    fullname: responsePayload.name,
+                    email: responsePayload.email,
+                    authProvider: 'google',
+                    registeredAt: new Date().toISOString()
+                };
+                users.push(existingUser);
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            // Create user session object
+            const user = {
+                username: responsePayload.email,
+                name: responsePayload.name || responsePayload.given_name,
+                fullname: responsePayload.name,
+                email: responsePayload.email,
+                picture: responsePayload.picture,
+                isLoggedIn: true,
+                authProvider: 'google'
+            };
+
+            // Store user info in localStorage
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Load progress from Firestore
+            db.collection('userProgress')
+                .doc(responsePayload.email)
+                .get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        // If user has cloud progress, use it
+                        const cloudProgress = doc.data();
+                        localStorage.setItem(`progress_${responsePayload.email}`, JSON.stringify(cloudProgress));
+                    } else {
+                        // If no cloud progress exists, initialize it
+                        const initialProgress = {};
+                        db.collection('userProgress')
+                            .doc(responsePayload.email)
+                            .set(initialProgress);
+                        localStorage.setItem(`progress_${responsePayload.email}`, JSON.stringify(initialProgress));
+                    }
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error("Error loading progress:", error);
+                    // Initialize empty progress if there's an error
+                    localStorage.setItem(`progress_${responsePayload.email}`, JSON.stringify({}));
+                    window.location.href = 'index.html';
+                });
+        }
+
+        function decodeJwtResponse(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // Regular login form handling
+        const loginForm = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const usernameOrEmail = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Find user by username or email
+            const user = users.find(u => 
+                (u.username === usernameOrEmail || u.email === usernameOrEmail) && 
+                btoa(password) === u.password
+            );
+            
+            if (user) {
+                // Initialize progress if not exists
+                if (!localStorage.getItem(`progress_${user.email}`)) {
+                    localStorage.setItem(`progress_${user.email}`, JSON.stringify({}));
+                }
+
+                // Store user info in localStorage
+                localStorage.setItem('currentUser', JSON.stringify({
+                    username: user.username,
+                    name: user.fullname,
+                    email: user.email,
+                    isLoggedIn: true,
+                    authProvider: 'local'
+                }));
+                
+                // Redirect to home page
+                window.location.href = 'index.html';
+            } else {
+                errorMessage.textContent = 'Invalid username/email or password';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 
