@@ -285,12 +285,18 @@
         const courseDetails = {
             'crypto': {
                 name: 'Applied Cryptography',
-                price: '₩50,000'
+                price: '₩5,000'
             },
             'network': {
                 name: 'Network Security',
-                price: '₩70,000'
+                price: '₩5,000'
             }
+        };
+
+        // Course access URLs - add these after payment
+        const courseAccessUrls = {
+            'crypto': '/courses/cryptography/start',
+            'network': '/courses/network-security/start'
         };
 
         // Display course details
@@ -398,20 +404,57 @@
         }
 
         function processPayment(paymentData) {
+            // Show loading state
+            const loadingMessage = document.createElement('div');
+            loadingMessage.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;';
+            loadingMessage.innerHTML = '<p style="margin: 0;">Processing payment... Please wait.</p>';
+            document.body.appendChild(loadingMessage);
+
             // Send payment data to your server
             fetch('/api/process-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(paymentData)
+                body: JSON.stringify({
+                    paymentData: paymentData,
+                    courseId: courseId,
+                    amount: courseDetails[courseId].price.replace('₩', '').replace(',', '')
+                })
             })
             .then(response => response.json())
             .then(result => {
-                alert('Payment successful! You will receive access to the course shortly.');
-                window.location.href = 'payment-confirmation.html';
+                // Remove loading message
+                loadingMessage.remove();
+                
+                // Store access token or course access data in localStorage
+                localStorage.setItem('courseAccess_' + courseId, 'granted');
+                localStorage.setItem('purchaseDate_' + courseId, new Date().toISOString());
+                
+                // Show success message with immediate access button
+                const successDialog = document.createElement('div');
+                successDialog.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; text-align: center;';
+                successDialog.innerHTML = `
+                    <h2 style="margin-top: 0; color: #00cc6a;">Payment Successful!</h2>
+                    <p>Your payment has been processed successfully.</p>
+                    <p>You can start your course immediately!</p>
+                    <button onclick="window.location.href='${courseAccessUrls[courseId]}'" 
+                            style="background: #00ff88; color: black; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        Start Course Now
+                    </button>
+                `;
+                document.body.appendChild(successDialog);
+
+                // Remove dialog after clicking the button
+                successDialog.querySelector('button').onclick = function() {
+                    successDialog.remove();
+                    window.location.href = courseAccessUrls[courseId];
+                };
             })
             .catch(error => {
+                // Remove loading message
+                loadingMessage.remove();
+                
                 console.error('Payment processing failed:', error);
                 alert('Payment processing failed. Please try again.');
             });
@@ -443,20 +486,34 @@
             }
 
             const receipt = document.getElementById('receipt').files[0];
-            if (!receipt) {
+            if (!receipt && selectedMethod === 'bank') {
                 alert('Please upload your transfer receipt');
                 return;
             }
 
-            // Here you would typically:
-            // 1. Upload the receipt to your server
-            // 2. Send an email notification to admin
-            // 3. Create a pending payment record
-            // 4. Show confirmation message
+            // For bank transfers, we'll still need manual verification
+            if (selectedMethod === 'bank') {
+                // Create form data
+                const formData = new FormData();
+                formData.append('receipt', receipt);
+                formData.append('courseId', courseId);
+                formData.append('amount', courseDetails[courseId].price.replace('₩', '').replace(',', ''));
 
-            alert('Thank you! Your payment verification has been submitted. We will process it within 24 hours.');
-            // Redirect to a confirmation page
-            window.location.href = 'payment-confirmation.html';
+                // Send to server
+                fetch('/api/verify-bank-transfer', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    alert('Thank you! Your payment verification has been submitted. We will process it within 24 hours.');
+                    window.location.href = 'payment-confirmation.html';
+                })
+                .catch(error => {
+                    console.error('Verification submission failed:', error);
+                    alert('Submission failed. Please try again.');
+                });
+            }
         }
 
         function copyToClipboard(text) {
