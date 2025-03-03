@@ -284,6 +284,26 @@ body {
     margin-left: -1em;
 }
 
+.course-price {
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.course-price .price-tag {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: #f0f8ff;
+    border-radius: 20px;
+    color: #1a1a1a;
+}
+
+.course-price.free .price-tag {
+    background: #e3fcef;
+    color: #00cc6a;
+}
+
 .start-course-btn {
     display: block;
     text-align: center;
@@ -298,6 +318,15 @@ body {
 
 .start-course-btn:hover {
     background: #00cc6a;
+}
+
+.start-course-btn.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.start-course-btn.disabled:hover {
+    background: #ccc;
 }
 
 /* About section */
@@ -634,4 +663,86 @@ footer {
 .lesson-list li.active a {
     color: #00cc6a;
     font-weight: bold;
+}
+
+/* Payment form styles */
+.payment-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-methods {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.payment-method {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-method:hover {
+    border-color: #00ff88;
+    background: #f8f9fa;
+}
+
+.payment-method.selected {
+    border-color: #00ff88;
+    background: #e3fcef;
+}
+
+.payment-method i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.bank-details {
+    background: #f0f8ff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+.receipt-upload {
+    margin: 2rem 0;
+}
+
+.receipt-upload label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.receipt-upload input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.submit-payment {
+    background: #00ff88;
+    color: black;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.submit-payment:hover {
+    background: #00cc6a;
 } 

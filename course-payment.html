@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Purchase - Hack Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add Google Pay SDK with proper onload handler -->
+    <script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded()"></script>
+    <style>
+        .payment-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-steps {
+            margin: 2rem 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .payment-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #00ff88;
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+
+        .bank-details {
+            background: #f0f8ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .bank-details h3 {
+            margin-top: 0;
+            color: #1a1a1a;
+        }
+
+        .receipt-upload {
+            margin: 2rem 0;
+        }
+
+        .receipt-upload label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .receipt-upload input[type="file"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+            background: #00ff88;
+            color: black;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #00cc6a;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .payment-method.selected {
+            border-color: #00ff88;
+            background: #e3fcef;
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bank-info {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .bank-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .bank-row strong {
+            width: 100px;
+            color: #666;
+        }
+
+        .bank-row span {
+            flex: 1;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #00cc6a;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            color: #009e54;
+        }
+
+        .bank-note {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #fff4e5;
+            border-radius: 4px;
+        }
+
+        .bank-note p {
+            color: #ff9800;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .bank-note ul {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+
+        .bank-note li {
+            color: #666;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .bank-note li:before {
+            content: "•";
+            color: #ff9800;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#courses">Courses</a></li>
+            <li><a href="login.html" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="payment-container">
+        <h1>Course Purchase</h1>
+        <div id="course-details">
+            <!-- Will be filled by JavaScript -->
+        </div>
+
+        <div class="payment-methods">
+            <div class="payment-method" onclick="selectPaymentMethod('bank')">
+                <i class="fas fa-university"></i>
+                <h3>Bank Transfer</h3>
+                <p>Direct bank transfer</p>
+            </div>
+            <div class="payment-method" onclick="selectPaymentMethod('google')">
+                <i class="fab fa-google-pay"></i>
+                <h3>Google Pay</h3>
+                <p>Fast & secure payment</p>
+            </div>
+            <div class="payment-method" onclick="selectPaymentMethod('kakao')">
+                <i class="fas fa-comment"></i>
+                <h3>Kakao Pay</h3>
+                <p>Pay with Kakao</p>
+            </div>
+            <div class="payment-method" onclick="selectPaymentMethod('toss')">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Toss</h3>
+                <p>Pay with Toss</p>
+            </div>
+        </div>
+
+        <!-- Add Google Pay Button Container -->
+        <div id="googlePayContainer" style="display: none; margin: 2rem 0;">
+            <div id="googlePayButton"></div>
+        </div>
+
+        <div class="bank-details" id="bankDetails" style="display: none;">
+            <h3>Bank Transfer Details</h3>
+            <div class="bank-info">
+                <div class="bank-row">
+                    <strong>은행:</strong> <!-- Bank Name -->
+                    <span>신한은행 (Shinhan Bank)</span>
+                </div>
+                <div class="bank-row">
+                    <strong>계좌번호:</strong> <!-- Account Number -->
+                    <span>110-123-456789</span>
+                    <button onclick="copyToClipboard('110-123-456789')" class="copy-btn">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <div class="bank-row">
+                    <strong>예금주:</strong> <!-- Account Holder -->
+                    <span>HACK ACADEMY</span>
+                </div>
+                <div class="bank-row">
+                    <strong>금액:</strong> <!-- Amount -->
+                    <span id="amount">₩0</span>
+                </div>
+                <div class="bank-note">
+                    <p><i class="fas fa-info-circle"></i> 송금 시 참고사항:</p>
+                    <ul>
+                        <li>송금자명은 반드시 등록된 이름과 동일해야 합니다</li>
+                        <li>이체 후 아래에 이체확인증을 첨부해 주세요</li>
+                        <li>24시간 이내에 확인 후 강의 접근 권한이 부여됩니다</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <form id="paymentForm" onsubmit="submitPayment(event)">
+            <div class="receipt-upload">
+                <label for="receipt">Upload Transfer Receipt (이체확인증)</label>
+                <input type="file" id="receipt" name="receipt" accept="image/*,.pdf" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Payment Verification</button>
+        </form>
+    </div>
+
+    <script>
+        // Get course details from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('course');
+        const courseDetails = {
+            'crypto': {
+                name: 'Applied Cryptography',
+                price: '₩50,000'
+            },
+            'network': {
+                name: 'Network Security',
+                price: '₩70,000'
+            }
+        };
+
+        // Display course details
+        if (courseDetails[courseId]) {
+            document.getElementById('course-details').innerHTML = `
+                <h2>${courseDetails[courseId].name}</h2>
+                <p>Price: ${courseDetails[courseId].price}</p>
+            `;
+            document.getElementById('amount').textContent = courseDetails[courseId].price;
+        }
+
+        let selectedMethod = '';
+
+        // Google Pay configuration based on video tutorial
+        const baseRequest = {
+            apiVersion: 2,
+            apiVersionMinor: 0
+        };
+
+        const tokenizationSpecification = {
+            type: 'PAYMENT_GATEWAY',
+            parameters: {
+                'gateway': 'example',
+                'gatewayMerchantId': 'YOUR_MERCHANT_ID' // Replace with your actual merchant ID from the Google Pay console
+            }
+        };
+
+        const baseCardPaymentMethod = {
+            type: 'CARD',
+            parameters: {
+                allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                allowedCardNetworks: ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
+            }
+        };
+
+        const googlePayConfiguration = {
+            ...baseRequest,
+            allowedPaymentMethods: [baseCardPaymentMethod]
+        };
+
+        let paymentsClient = null;
+
+        function onGooglePayLoaded() {
+            try {
+                paymentsClient = new google.payments.api.PaymentsClient({
+                    environment: 'TEST' // Change to 'PRODUCTION' when going live
+                });
+
+                paymentsClient.isReadyToPay(googlePayConfiguration)
+                    .then(function(response) {
+                        if (response.result) {
+                            createAndAddButton();
+                        } else {
+                            console.log('Google Pay is not available');
+                            document.querySelector('[onclick="selectPaymentMethod(\'google\')"]').style.display = 'none';
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error('Google Pay check failed:', err);
+                        document.querySelector('[onclick="selectPaymentMethod(\'google\')"]').style.display = 'none';
+                    });
+            } catch (err) {
+                console.error('Failed to initialize Google Pay:', err);
+                document.querySelector('[onclick="selectPaymentMethod(\'google\')"]').style.display = 'none';
+            }
+        }
+
+        function createAndAddButton() {
+            const button = paymentsClient.createButton({
+                onClick: onGooglePaymentButtonClicked,
+                allowedPaymentMethods: [baseCardPaymentMethod]
+            });
+            document.getElementById('googlePayButton').appendChild(button);
+        }
+
+        function onGooglePaymentButtonClicked() {
+            const paymentDataRequest = {
+                ...googlePayConfiguration,
+                merchantInfo: {
+                    merchantName: 'Hack Academy',
+                    merchantId: 'BCR2DN4T776KRLIJ' // Replace with your actual merchant ID
+                },
+                transactionInfo: {
+                    totalPriceStatus: 'FINAL',
+                    totalPrice: courseDetails[courseId].price.replace('₩', ''),
+                    currencyCode: 'KRW',
+                    countryCode: 'KR'
+                }
+            };
+
+            paymentsClient.loadPaymentData(paymentDataRequest)
+                .then(function(paymentData) {
+                    processPayment(paymentData);
+                })
+                .catch(function(err) {
+                    if (err.statusCode === "CANCELED") {
+                        console.log('User cancelled the payment');
+                    } else {
+                        console.error('Payment failed:', err);
+                    }
+                });
+        }
+
+        function processPayment(paymentData) {
+            // Here you would send the paymentData to your server
+            // For now, we'll simulate a successful payment
+            alert('Payment successful! You will receive access to the course shortly.');
+            window.location.href = 'payment-confirmation.html';
+        }
+
+        // Modify existing selectPaymentMethod function
+        function selectPaymentMethod(method) {
+            selectedMethod = method;
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Show/hide appropriate payment sections
+            document.getElementById('bankDetails').style.display = 
+                method === 'bank' ? 'block' : 'none';
+            document.getElementById('googlePayContainer').style.display = 
+                method === 'google' ? 'block' : 'none';
+            document.getElementById('paymentForm').style.display = 
+                method === 'bank' ? 'block' : 'none';
+        }
+
+        function submitPayment(event) {
+            event.preventDefault();
+            
+            if (!selectedMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            const receipt = document.getElementById('receipt').files[0];
+            if (!receipt) {
+                alert('Please upload your transfer receipt');
+                return;
+            }
+
+            // Here you would typically:
+            // 1. Upload the receipt to your server
+            // 2. Send an email notification to admin
+            // 3. Create a pending payment record
+            // 4. Show confirmation message
+
+            alert('Thank you! Your payment verification has been submitted. We will process it within 24 hours.');
+            // Redirect to a confirmation page
+            window.location.href = 'payment-confirmation.html';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('계좌번호가 복사되었습니다.');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation - Hack Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .confirmation-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .confirmation-icon {
+            font-size: 4rem;
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-title {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-message {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .next-steps {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .next-steps ol {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .next-steps li {
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: #00ff88;
+            color: black;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 2rem;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #00cc6a;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#courses">Courses</a></li>
+            <li><a href="login.html" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="confirmation-container">
+        <i class="fas fa-check-circle confirmation-icon"></i>
+        <h1 class="confirmation-title">Payment Verification Submitted</h1>
+        <p class="confirmation-message">Thank you for your purchase! We've received your payment verification.</p>
+
+        <div class="next-steps">
+            <h3>What's Next?</h3>
+            <ol>
+                <li>Our team will verify your payment within 24 hours</li>
+                <li>You'll receive a confirmation email when verified</li>
+                <li>Course access will be automatically granted</li>
+                <li>You can start learning immediately after verification</li>
+            </ol>
+        </div>
+
+        <a href="index.html#courses" class="back-button">Back to Courses</a>
+    </div>
+</body>
+</html> 

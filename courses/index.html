@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Hack Academy</title>
+    <link rel="stylesheet" href="/Hack-academy/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhYDzGu6xEPj6yJCXTFZqBw5xWQGQhFWw",
+            authDomain: "hack-academy-learning.firebaseapp.com",
+            projectId: "hack-academy-learning",
+            storageBucket: "hack-academy-learning.appspot.com",
+            messagingSenderId: "354001063904",
+            appId: "1:354001063904:web:5e32668679d96f3d6f3c3c"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+    <style>
+        /* Header styles */
+        .courses-header {
+            background: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.9)),
+                        url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 4rem 2rem;
+            margin-top: 60px;
+        }
+
+        .courses-header-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .courses-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #00ff88;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .courses-header p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Course grid styles */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .course-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-title {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+
+        .course-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .course-progress {
+            flex: 1;
+            margin-right: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00cc6a);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.75rem;
+            font-weight: 500;
+        }
+
+        .course-level {
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .beginner {
+            background: #e3fcef;
+            color: #00cc6a;
+        }
+
+        .intermediate {
+            background: #fff4e5;
+            color: #ff9900;
+        }
+
+        .advanced {
+            background: #ffe5e5;
+            color: #ff4444;
+        }
+
+        .start-course-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 1rem;
+            background: #00ff88;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            border: 2px solid transparent;
+        }
+
+        .start-course-btn:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .courses-header {
+                min-height: 300px;
+                padding: 3rem 1.5rem;
+            }
+
+            .courses-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .courses-header p {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .course-card {
+                max-width: 100%;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hack Academy</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/Hack-academy/index.html">Home</a></li>
+            <li><a href="/Hack-academy/index.html#courses">Courses</a></li>
+            <li><a href="#" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <header class="courses-header">
+        <div class="courses-header-content">
+            <h1>Master Cybersecurity</h1>
+            <p>Choose from our comprehensive selection of courses designed to take you from beginner to expert in cybersecurity. Learn at your own pace with hands-on projects and real-world scenarios.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="courses-grid">
+            <div class="course-card" data-level="beginner">
+                <img src="/Hack-academy/images/web-security.jpg" alt="Web Security" class="course-image">
+                <div class="course-content">
+                    <h2 class="course-title">Web Security Fundamentals</h2>
+                    <p class="course-description">Learn the basics of web security, including common vulnerabilities, secure coding practices, and how to protect web applications from attacks.</p>
+                    <div class="course-meta">
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress" id="web-security-progress"></div>
+                            </div>
+                            <div class="progress-text" id="web-security-progress-text">0% Complete</div>
+                        </div>
+                        <span class="course-level beginner">Beginner</span>
+                    </div>
+                    <a href="/Hack-academy/courses/web-security/lessons/lesson1.html" class="start-course-btn" data-course="web-security">Start Course</a>
+                </div>
+            </div>
+
+            <div class="course-card" data-level="intermediate">
+                <img src="/Hack-academy/images/cryptography.jpg" alt="Cryptography" class="course-image">
+                <div class="course-content">
+                    <h2 class="course-title">Applied Cryptography</h2>
+                    <p class="course-description">Explore cryptographic concepts, algorithms, and their practical applications in securing data and communications.</p>
+                    <div class="course-meta">
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress" id="cryptography-progress"></div>
+                            </div>
+                            <div class="progress-text" id="cryptography-progress-text">0% Complete</div>
+                        </div>
+                        <span class="course-level intermediate">Intermediate</span>
+                    </div>
+                    <a href="/Hack-academy/courses/cryptography/lessons/lesson1.html" class="start-course-btn" data-course="cryptography">Start Course</a>
+                </div>
+            </div>
+
+            <div class="course-card" data-level="advanced">
+                <img src="/Hack-academy/images/network-security.jpg" alt="Network Security" class="course-image">
+                <div class="course-content">
+                    <h2 class="course-title">Network Security</h2>
+                    <p class="course-description">Master network security principles, protocols, and best practices for protecting organizational infrastructure.</p>
+                    <div class="course-meta">
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress" id="network-security-progress"></div>
+                            </div>
+                            <div class="progress-text" id="network-security-progress-text">0% Complete</div>
+                        </div>
+                        <span class="course-level advanced">Advanced</span>
+                    </div>
+                    <a href="/Hack-academy/courses/network-security/lessons/lesson1.html" class="start-course-btn" data-course="network-security">Start Course</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check login state
+        function checkLoginState() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const loginBtn = document.querySelector('.login-btn');
+            
+            if (currentUser.isLoggedIn) {
+                // Update login button
+                if (currentUser.authProvider === 'google' && currentUser.picture) {
+                    loginBtn.innerHTML = `
+                        <img src="${currentUser.picture}" alt="${currentUser.name}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;">
+                        <span>${currentUser.name}</span>
+                    `;
+                } else {
+                    loginBtn.innerHTML = `
+                        <i class="fas fa-user"></i>
+                        <span>${currentUser.name}</span>
+                    `;
+                }
+                loginBtn.href = '#';
+                
+                // Add logout functionality
+                loginBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('currentUser');
+                    window.location.reload();
+                });
+
+                // Load and display progress for each course
+                const courses = ['web-security', 'cryptography', 'network-security'];
+                courses.forEach(courseId => {
+                    const progress = loadCourseProgress(courseId);
+                    updateCourseProgress(courseId, progress);
+                });
+            } else {
+                loginBtn.innerHTML = 'Login';
+                loginBtn.href = '/Hack-academy/login.html';
+            }
+        }
+
+        // Load course progress
+        function loadCourseProgress(courseId) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser.isLoggedIn) {
+                const userProgress = JSON.parse(localStorage.getItem(`progress_${currentUser.email}`) || '{}');
+                return userProgress[courseId] || 0;
+            }
+            return 0;
+        }
+
+        // Update course progress UI
+        function updateCourseProgress(courseId, progress) {
+            const progressBar = document.getElementById(`${courseId}-progress`);
+            const progressText = document.getElementById(`${courseId}-progress-text`);
+            
+            if (progressBar && progressText) {
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${progress}% Complete`;
+            }
+        }
+
+        // Handle course button clicks
+        document.querySelectorAll('.start-course-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                
+                if (!currentUser.isLoggedIn) {
+                    e.preventDefault();
+                    window.location.href = '/Hack-academy/login.html';
+                }
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginState();
+        });
+    </script>
+</body>
+</html> 
