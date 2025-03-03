@@ -218,16 +218,6 @@
                 <h3>Google Pay</h3>
                 <p>Fast & secure payment</p>
             </div>
-            <div class="payment-method" onclick="selectPaymentMethod('kakao')">
-                <i class="fas fa-comment"></i>
-                <h3>Kakao Pay</h3>
-                <p>Pay with Kakao</p>
-            </div>
-            <div class="payment-method" onclick="selectPaymentMethod('toss')">
-                <i class="fas fa-mobile-alt"></i>
-                <h3>Toss</h3>
-                <p>Pay with Toss</p>
-            </div>
         </div>
 
         <!-- Add Google Pay Button Container -->
@@ -240,18 +230,18 @@
             <div class="bank-info">
                 <div class="bank-row">
                     <strong>은행:</strong> <!-- Bank Name -->
-                    <span>신한은행 (Shinhan Bank)</span>
+                    <span>SC제일은행 (Standard Chartered Bank Korea)</span>
                 </div>
                 <div class="bank-row">
                     <strong>계좌번호:</strong> <!-- Account Number -->
-                    <span>110-123-456789</span>
-                    <button onclick="copyToClipboard('110-123-456789')" class="copy-btn">
+                    <span>337-20-19829</span>
+                    <button onclick="copyToClipboard('337-20-19829')" class="copy-btn">
                         <i class="fas fa-copy"></i>
                     </button>
                 </div>
                 <div class="bank-row">
                     <strong>예금주:</strong> <!-- Account Holder -->
-                    <span>HACK ACADEMY</span>
+                    <span>Standard Chartered Korea Ltd</span>
                 </div>
                 <div class="bank-row">
                     <strong>금액:</strong> <!-- Amount -->
@@ -262,7 +252,7 @@
                     <ul>
                         <li>송금자명은 반드시 등록된 이름과 동일해야 합니다</li>
                         <li>이체 후 아래에 이체확인증을 첨부해 주세요</li>
-                        <li>24시간 이내에 확인 후 강의 접근 권한이 부여됩니다</li>
+                        <li>48시간 이내에 확인 후 강의 접근 권한이 부여됩니다</li>
                     </ul>
                 </div>
             </div>
@@ -320,7 +310,7 @@
             type: 'PAYMENT_GATEWAY',
             parameters: {
                 'gateway': 'example',
-                'gatewayMerchantId': 'YOUR_MERCHANT_ID'
+                'gatewayMerchantId': 'BCR2DN4T776KRLIJ'
             }
         };
 
@@ -328,7 +318,7 @@
             type: 'CARD',
             parameters: {
                 allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                allowedCardNetworks: ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
+                allowedCardNetworks: ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA, TOSS, KAKAO"]
             },
             tokenizationSpecification: tokenizationSpecification
         };
@@ -397,10 +387,49 @@
                 .catch(function(err) {
                     if (err.statusCode === "CANCELED") {
                         console.log('User cancelled the payment');
+                        showBankTransferOption();
                     } else {
                         console.error('Payment failed:', err);
+                        showBankTransferOption();
                     }
                 });
+        }
+
+        function showBankTransferOption() {
+            const fallbackDialog = document.createElement('div');
+            fallbackDialog.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; text-align: center; max-width: 400px;';
+            fallbackDialog.innerHTML = `
+                <h2 style="margin-top: 0; color: #666;">Alternative Payment Option</h2>
+                <p>You can pay directly to our bank account:</p>
+                <div style="text-align: left; background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 15px 0;">
+                    <p style="margin: 5px 0;"><strong>Bank:</strong> SC제일은행 (Standard Chartered Bank Korea)</p>
+                    <p style="margin: 5px 0;"><strong>Account:</strong> 337-20-19829</p>
+                    <p style="margin: 5px 0;"><strong>Holder:</strong> Standard Chartered Korea Ltd</p>
+                    <p style="margin: 5px 0;"><strong>Amount:</strong> ${courseDetails[courseId].price}</p>
+                </div>
+                <button onclick="copyBankDetails()" 
+                        style="background: #00ff88; color: black; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; margin: 10px;">
+                    Copy Account Details
+                </button>
+                <button onclick="document.body.removeChild(this.parentElement)" 
+                        style="background: #f8f9fa; color: #666; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 10px;">
+                    Close
+                </button>
+            `;
+            document.body.appendChild(fallbackDialog);
+        }
+
+        function copyBankDetails() {
+            const bankInfo = `Bank: SC제일은행 (Standard Chartered Bank Korea)
+Account: 337-20-19829
+Holder: Standard Chartered Korea Ltd
+Amount: ${courseDetails[courseId].price}`;
+            
+            navigator.clipboard.writeText(bankInfo).then(() => {
+                alert('Bank details copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
         }
 
         function processPayment(paymentData) {
@@ -516,9 +545,10 @@
             }
         }
 
+        // Update the existing copyToClipboard function to be more informative
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert('계좌번호가 복사되었습니다.');
+                alert('계좌번호가 복사되었습니다 (Account number copied)');
             }).catch(err => {
                 console.error('Failed to copy:', err);
             });
