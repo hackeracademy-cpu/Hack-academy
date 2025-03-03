@@ -314,7 +314,7 @@
             type: 'PAYMENT_GATEWAY',
             parameters: {
                 'gateway': 'example',
-                'gatewayMerchantId': 'YOUR_MERCHANT_ID' // Replace with your actual merchant ID from the Google Pay console
+                'gatewayMerchantId': 'YOUR_MERCHANT_ID'
             }
         };
 
@@ -323,12 +323,14 @@
             parameters: {
                 allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
                 allowedCardNetworks: ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]
-            }
+            },
+            tokenizationSpecification: tokenizationSpecification
         };
 
         const googlePayConfiguration = {
             ...baseRequest,
-            allowedPaymentMethods: [baseCardPaymentMethod]
+            allowedPaymentMethods: [baseCardPaymentMethod],
+            existingPaymentMethodRequired: true
         };
 
         let paymentsClient = null;
@@ -360,6 +362,8 @@
 
         function createAndAddButton() {
             const button = paymentsClient.createButton({
+                buttonColor: 'black', // 'default' | 'black' | 'white'
+                buttonType: 'long', // 'short' | 'long'
                 onClick: onGooglePaymentButtonClicked,
                 allowedPaymentMethods: [baseCardPaymentMethod]
             });
@@ -368,23 +372,22 @@
 
         function onGooglePaymentButtonClicked() {
             const paymentDataRequest = {
-                ...googlePayConfiguration,
-                merchantInfo: {
-                    merchantName: 'Hack Academy',
-                    merchantId: 'BCR2DN4T776KRLIJ' // Replace with your actual merchant ID
-                },
+                ...baseRequest,
+                allowedPaymentMethods: [baseCardPaymentMethod],
                 transactionInfo: {
                     totalPriceStatus: 'FINAL',
-                    totalPrice: courseDetails[courseId].price.replace('₩', ''),
+                    totalPrice: courseDetails[courseId].price.replace('₩', '').replace(',', ''),
                     currencyCode: 'KRW',
                     countryCode: 'KR'
+                },
+                merchantInfo: {
+                    merchantName: 'Hack Academy',
+                    merchantId: 'YOUR_MERCHANT_ID'
                 }
             };
 
             paymentsClient.loadPaymentData(paymentDataRequest)
-                .then(function(paymentData) {
-                    processPayment(paymentData);
-                })
+                .then(processPayment)
                 .catch(function(err) {
                     if (err.statusCode === "CANCELED") {
                         console.log('User cancelled the payment');
@@ -395,10 +398,23 @@
         }
 
         function processPayment(paymentData) {
-            // Here you would send the paymentData to your server
-            // For now, we'll simulate a successful payment
-            alert('Payment successful! You will receive access to the course shortly.');
-            window.location.href = 'payment-confirmation.html';
+            // Send payment data to your server
+            fetch('/api/process-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert('Payment successful! You will receive access to the course shortly.');
+                window.location.href = 'payment-confirmation.html';
+            })
+            .catch(error => {
+                console.error('Payment processing failed:', error);
+                alert('Payment processing failed. Please try again.');
+            });
         }
 
         // Modify existing selectPaymentMethod function
